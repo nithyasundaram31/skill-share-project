@@ -1,5 +1,5 @@
 const mongoose=require("mongoose");
-const bcryptjs=require("bcryptjs");
+const bcrypt=require("bcryptjs");
 const jwt = require('jsonwebtoken');
 
 const userSchema = new mongoose.Schema({
@@ -28,14 +28,16 @@ role:{
 },
 
 
-
-
   profile:{
    address: {
       type: String,
     },
     dob: {
       type: Date,
+    },
+      gender: {
+      type: String,
+      enum: ['male', 'female', 'other'], 
     },
    
   }, // Nesting the profile schema
