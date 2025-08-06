@@ -5,46 +5,46 @@ const createToken = require('../utils/tokenUtils');
 // Student Register Controller
 exports.registerUser = async (req, res) => {
     try {
-        const { name, email, password } = req.body;
+        const { name, email, password, } = req.body;
 
-         // validate input
-            if (!name || !email || !password) {
-                return res.status(400).json({ message: 'All fields are required' });
-            }
-            // check if user already exists
-            const existingUser = await User.findOne({ email });
+        // validate input
+        if (!name || !email || !password) {
+            return res.status(400).json({ message: 'All fields are required' });
+        }
+        // check if user already exists
+        const existingUser = await User.findOne({ email });
 
-            if (existingUser) {
-                return res.status(400).json({ message: 'User already exists' });
-            }
+        if (existingUser) {
+            return res.status(400).json({ message: 'User already exists' });
+        }
 
         //   if role is not student (protect from frontend )
         // if (role !== 'student') {
         //     return res.status(403).json({ message: "You are not allowed to register as admin." });
         // }
-  //Hashing the Password
-  const hashedPassword = await bcrypt.hash(req.body.password, 10);
-const user = new User({
-  username: req.body.username,
-  email: req.body.email,
-  password: hashedPassword, // hashed manually
-});
-       
+        //Hashing the Password
+        const hashedPassword = await bcrypt.hash(req.body.password, 10);
+        const user = new User({
+            name,
+            email,
+            password: hashedPassword, // hashed manually
+        });
+
         await user.save();
 
-        res.status(201).json({ user: { name, email, role }, message: "User successfully registered" });
+        res.status(201).json({ user: { name, email, role: user.role }, message: "User successfully registered" });
 
     } catch (error) {
-        
-            res.status(500).json({ message: "Something went wrong." });
-        }
-    
+        console.log(error);
+        res.status(500).json({ message: "Something went wrong." });
+    }
+
 };
 
 //  Login Controller (both Admin & Student)
 exports.loginUser = async (req, res) => {
     try {
-        const { email, password  } = req.body;
+        const { email, password } = req.body;
 
         if (!email || !password) {
             return res.status(400).json({ success: false, message: 'Please provide an email and password' });
@@ -59,7 +59,7 @@ exports.loginUser = async (req, res) => {
         if (!match) {
             return res.status(401).json({ success: false, message: 'Invalid credentials. Please try again.' });
         }
-     
+
         //  if (isStudent && user.role !== 'student') {
         //     return res.status(403).json({ message: "Only students can login here." });
         // } 
@@ -71,7 +71,7 @@ exports.loginUser = async (req, res) => {
                 email: user.email,
                 role: user.role,
                 id: user._id,
-              
+
             },
             message: "User successfully login"
         });
