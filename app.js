@@ -1,6 +1,7 @@
 const express = require("express");
 
 const errorRoute = require("./utils/errorRoute");
+const cors = require('cors');
 const userRoute = require("./routers/userRoute");
 const categoryRoute = require("./routers/categoryRoute");
 const termRoute = require("./routers/termRoute");
