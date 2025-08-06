@@ -18,7 +18,7 @@ const userSchema = new mongoose.Schema({
    type:String,
    required: [true, 'Please provide a password'],
     select:false, 
-    maxlength:12
+   
   },
 
 role:{
@@ -26,7 +26,6 @@ role:{
     enum:['user', 'admin'],
     default:'user'
 },
-
 
   profile:{
    address: {
@@ -43,7 +42,6 @@ role:{
   }, // Nesting the profile schema
   
 });
- 
-
-
+   
 module.exports = mongoose.model('User', userSchema, 'users');
+        
