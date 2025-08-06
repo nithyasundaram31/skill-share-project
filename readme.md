@@ -3,18 +3,23 @@
 +--------------------------------------------------------------+
 | [Sidebar]              | [Main Content]                      |
 |------------------------+-------------------------------------|
-| - Dashboard            |  🔽 React Basics                    |
-| - Terms                |  --------------------------------   |
-| - Job Types            |  ✔️ Title: React Basics             |
-| - Resources [Active]   |  ✔️ Term: Frontend                  |
-|                        |  ✔️ Job Type: Developer             |
-|                        |  👍 Likes: 25                       |
-|                        |  💬 Comments (3):                   |
+| - Dashboard            | 🔍 [Search Resources...]           |
+| - Terms                | [Term ⏷] [Job Type ⏷] [Sort ⏷]     |
+| - Job Types            |                                     |
+| - Resources [Active]   | 🔽 React Basics                    |
+|                        | --------------------------------   |
+|                        | ✔️ Title: React Basics             |
+|                        | ✔️ Term: Frontend                  |
+|                        | ✔️ Job Type: Developer             |
+|                        | ▶️ Video: [Watch Video]            |
+|                        | 👍 Likes: 25                       |
+|                        | 💬 Comments (3):                   |
 |                        |   - John: Very useful               |
 |                        |   - Meena: Clear explanation        |
 |                        |   - Ravi: Thanks sir!               |
-|                        |  [🗑 Delete Resource]               |
+|                        | [🗑 Delete Resource]               |
 +--------------------------------------------------------------+
+
 
 
 +--------------------------------------------------------------+
@@ -116,3 +121,38 @@
 |                        |  - Node.js Essentials               |
 |                        |  - Fullstack Roadmap                |
 |------------------------+-------------------------------------|
+
+
++--------------------------------------------------------------+
+| SkillShare - User Dashboard > Resources                      |
++--------------------------------------------------------------+
+
+| 🔍 [ Search Resources... ]   🔽 [ Filter by Term ]            |
+
++--------------------------------------------------------------+
+| +--------------------------+  +--------------------------+  |
+| | 🎥 [ Video Thumbnail ]   |  | 🎥 [ Video Thumbnail ]   |  |
+| | 📘 Title: React Basics   |  | 📘 Title: CSS Grid       |  |
+| | 🏷️ Term: Frontend        |  | 🏷️ Term: Frontend        |  |
+| | 👍 25 Likes              |  | 👍 15 Likes              |  |
+| | 💬 3 Comments            |  | 💬 5 Comments            |  |
+| | [ ▶️ Watch Now ]         |  | [ ▶️ Watch Now ]         |  |
+| +--------------------------+  +--------------------------+  |
+
+                 [ ⬅ Prev ]  Page 1 of 5  [ Next ➡ ]
++--------------------------------------------------------------+
+
+When user clicks [ ▶️ Watch Now ]:
+
++--------------------------------------------------------------+
+| 📘 Title: React Basics                                       |
+| 🏷️ Term: Frontend                                            |
+| 🎥 [ Video Player Embed / iframe ]                          |
+|                                                              |
+| 👍 [ Like Button ]    💬 [ Add Comment Input ]               |
+|                                                              |
+| 💬 Comments:                                                |
+| - John: Very useful!                                        |
+| - Meena: Clear explanation                                 |
+| - Ravi: Thanks sir!                                        |
++--------------------------------------------------------------+
