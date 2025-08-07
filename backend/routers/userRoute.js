@@ -1,5 +1,5 @@
 const express = require('express');
-const { registerUser, loginUser, getProfile, updateProfile, getAllStudents,  updateStudent } = require('../controllers/userController');
+const { registerUser, loginUser, getProfile, updateProfile } = require('../controllers/userController');
 const   authenticate  = require('../middlewares/auth');
 
 
