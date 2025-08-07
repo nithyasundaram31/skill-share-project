@@ -5,6 +5,9 @@ import { ToastContainer } from 'react-toastify'
 import LoginPage from './pages/LoginPage'
 import AdminDashboard from './pages/admin/adminDashboard'
 import SideBar from './components/sideBar'
+import AdminDashboardPage from './pages/admin/adminDashboardPage'
+import UserDashboard from './pages/user/UserDashboard'
+import UserDashboardPage from './pages/user/UserDashboardPage'
 
 
 function App() {
@@ -17,10 +20,17 @@ function App() {
       {/* Actual register route */}
       <Route path="/register" element={<RegisterPage />} />
  <Route path="/login" element={<LoginPage />} />
-     {/* <Route path="/admin" element={<SideBar />}>
-          <Route path="dashboard" element={<AdminDashboard />} />
-        </Route> */}
-        <Route path="dashboard" element={<AdminDashboard/>} />
+     
+      <Route path="/admin" element={< AdminDashboard/>}>
+          <Route path="dashboard" element={<AdminDashboardPage />} />
+          {/* Add more nested admin routes here if needed */}
+        </Route>
+          <Route path="/user" element={< UserDashboard/>}>
+          <Route path="dashboard" element={<UserDashboardPage />} />
+          {/* Add more nested admin routes here if needed */}
+        </Route>
+
+
     </Routes>
 
 

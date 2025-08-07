@@ -25,9 +25,14 @@ try{
                 dispatch(setPassword(''));
 
                 // navigate to the dashboard
-                setTimeout(() => {
-                    navigate('/dashboard');
-                }, 500);
+              setTimeout(() => {
+  const role = response.data.user.role;
+  if (role === "admin") {
+    navigate("/admin/dashboard");
+  } else {
+    navigate("/user/dashboard");
+  }
+}, 500);
 
         }catch(error){
                 toast.error(error.response.data.message);

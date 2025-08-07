@@ -3,7 +3,7 @@ import logo from '../assets/logo.png';
 import { FiLogOut } from 'react-icons/fi';
 import {  FaFolderOpen, FaThList, FaTimes } from 'react-icons/fa';
 import { MdDashboard, MdEventNote } from 'react-icons/md';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 
 function SideBar({ openMobileMenu, setOpenMobileMenu }) {
 
@@ -62,7 +62,7 @@ function SideBar({ openMobileMenu, setOpenMobileMenu }) {
           {roleInfo?.role==='admin'&&(
            <>
               <li className='flex items-center gap-3'>
-                <MdDashboard className='text-xl' /><Link>Dashboard</Link>
+                <MdDashboard className='text-xl' /><Link to='/admin/dashboard'>Dashboard</Link>
               </li>
 
               <li className='flex items-center gap-3'>

@@ -4,7 +4,7 @@ import NavBar from '../../components/NavBar'
 import { Outlet } from 'react-router-dom'
 
 
-function AdminDashboard() {
+function UserDashboard() {
   return (
     <>
     <NavBar/>
@@ -16,4 +16,4 @@ function AdminDashboard() {
   )
 }
 
-export default AdminDashboard
+export default UserDashboard
