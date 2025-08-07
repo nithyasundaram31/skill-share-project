@@ -9,14 +9,19 @@ const createToken = (user) => {
       { expiresIn: process.env.JWT_EXPIRE }   // Token expiration time
     );
      
+
     console.log("Generated token:", token);
    
+
     return token;
-    
+  
   } catch (error) {
+
     console.error("Error creating token:", error);
     throw new Error("Token creation failed");
   }
 };
+
+
 
 module.exports = createToken;
