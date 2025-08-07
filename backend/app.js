@@ -8,13 +8,10 @@ const termRoute = require("./routers/termRoute");
 const resourceRoute = require("./routers/resourceRoute");
 const commentRoute = require("./routers/commentRoute");
 
-
 const app = express();
-
 app.use(cors({
     // origin: 'https://resilient-brioche-1cb6d6.netlify.app', // Replace with your frontend URL
     // credentials: true, // Allow credentials to be sent
-
 
     origin: 'http://localhost:5173', // your Netlify frontend URL
   credentials: true, 
