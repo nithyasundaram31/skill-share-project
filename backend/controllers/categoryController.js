@@ -11,6 +11,7 @@ exports.createCategory = async (req, res) => {
   }
 };
 
+
 // Get All Categories
 exports.getCategories = async (req, res) => {
   try {
