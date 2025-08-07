@@ -9,7 +9,7 @@
   },
   "author": "",
   "license": "ISC",
-  "description": "",
+  "description": "+--------------------------------------------------------------+\r | SkillShare - Admin > All Resources                           |\r +--------------------------------------------------------------+\r | [Sidebar]              | [Main Content]                      |\r |------------------------+-------------------------------------|\r | - Dashboard            | 🔍 [Search Resources...]           |\r | - Terms                | [Term ⏷] [Job Type ⏷] [Sort ⏷]     |\r | - Job Types            |                                     |\r | - Resources [Active]   | 🔽 React Basics                    |\r |                        | --------------------------------   |\r |                        | ✔️ Title: React Basics             |\r |                        | ✔️ Term: Frontend                  |\r |                        | ✔️ Job Type: Developer             |\r |                        | ▶️ Video: [Watch Video]            |\r |                        | 👍 Likes: 25                       |\r |                        | 💬 Comments (3):                   |\r |                        |   - John: Very useful               |\r |                        |   - Meena: Clear explanation        |\r |                        |   - Ravi: Thanks sir!               |\r |                        | [🗑 Delete Resource]               |\r +--------------------------------------------------------------+",
   "dependencies": {
     "bcryptjs": "^3.0.2",
     "cors": "^2.8.5",
