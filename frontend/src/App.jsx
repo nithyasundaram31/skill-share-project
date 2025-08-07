@@ -20,10 +20,10 @@ function App() {
      {/* <Route path="/admin" element={<SideBar />}>
           <Route path="dashboard" element={<AdminDashboard />} />
         </Route> */}
-        <Route path="/user/dashboard" element={<AdminDashboard/>} />
+        <Route path="dashboard" element={<AdminDashboard/>} />
     </Routes>
 
-    
+
     <ToastContainer/>
     </>
    
