@@ -5,6 +5,8 @@ import { MdAccountCircle } from 'react-icons/md'
 import { Link } from 'react-router'
 import SideBar from './sideBar'
 
+
+
 function NavBar() {
     //store logged in user data in localstorage and get the data here
     const storeUser = JSON.parse(localStorage.getItem("user"))
