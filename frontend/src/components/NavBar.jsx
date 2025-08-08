@@ -42,7 +42,7 @@ setOpenMobileMenu(!openMobileMenu)
                             <MdAccountCircle className='md:mr-2  w-10 h-10 text-2xl cursor-pointer' title="Profile" />
                             < FaChevronDown className='' onClick={toggleDropdown} />
                             {openDropdown && (
-                                <div className=' bg-white shadow  p-4 md:w-[12%]  w-[20%] absolute z-20 top-14  right-6  flex flex-col justify-center  '>
+                                <div className=' bg-white shadow  p-4 md:w-[10%]  w-[20%] absolute z-20 top-14  right-6  flex flex-col justify-center  '>
                                     <Link className='mb-2 font-semibold hover:text-blue-600 cursor-pointer'> Profile</Link>
                                     <hr className='mb-2  font-semibold ' />
                                     <Link className='font-semibold hover:text-blue-600 cursor-pointer'>Logout</Link>
