@@ -32,14 +32,14 @@ function SideBar({ openMobileMenu, setOpenMobileMenu }) {
         </div>
 
         <ul className='flex flex-col justify-center  font-semibold text-lg mt-12  gap-4 '>
-          {roleInfo?.role === 'user' && (
+          {roleInfo?.role === 'admin' && (
             <>
               <li className='flex items-center gap-3'>
-                <MdDashboard className='text-xl' /><Link to='/user/dashboard'>Dashboard</Link>
+                <MdDashboard className='text-xl' /><Link to='/admin/dashboard'>Dashboard</Link>
               </li>
 
               <li className='flex items-center gap-3'>
-                <MdEventNote className='text-xl' /><Link>Terms</Link>
+                <MdEventNote className='text-xl' /><Link to='/admin/dashboard/terms'>Terms</Link>
               </li>
 
               <li className='flex items-center gap-3'>
@@ -59,10 +59,10 @@ function SideBar({ openMobileMenu, setOpenMobileMenu }) {
           )}
 
 
-          {roleInfo?.role==='admin'&&(
+          {roleInfo?.role==='user'&&(
            <>
               <li className='flex items-center gap-3'>
-                <MdDashboard className='text-xl' /><Link to='/admin/dashboard'>Dashboard</Link>
+                <MdDashboard className='text-xl' /><Link to='/user/dashboard'>Dashboard</Link>
               </li>
 
               <li className='flex items-center gap-3'>
