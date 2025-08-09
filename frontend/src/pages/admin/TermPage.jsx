@@ -100,7 +100,7 @@ const handleEdit = (id) => {
 
       <button
         onClick={handleButton}
-        className="mb-4 w-[90%] md:w-[40%] rounded px-4 py-4 bg-green-500 text-white text-xl font-semibold transition hover:bg-green-600 transform active:scale-90"
+        className="mb-4 w-[90%] md:w-[40%] rounded px-4 py-3 bg-green-500 text-white text-xl font-semibold transition hover:bg-green-600 transform active:scale-90"
       >
         Add New Term
       </button>
