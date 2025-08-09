@@ -9,26 +9,42 @@ function TermPage() {
   const  [addTerm,setAddTerm]=useState('')  // this is a add term
   const [terms,setTerms]=useState([]) //this is a all gets to fetch
   const [loading,setLoading]=useState(true)
+  const [editId, setEditId] = useState(null);
+
 
   const handleButton=()=>{
 setShowTerm(!showTerm)
   }
   const  termSubmit= async(e)=>{
     e.preventDefault();
- 
-    try{
-  const response=  await termServices.createTerm({name:addTerm})
-  console.log(" ther create term is:",response.data )
-setAddTerm('')
-setShowTerm(false)
-fetchAllTerms();
-toast.success("term creation successfully")
-    }catch(error){
-        console.log("Term creation error is:", error)
-        toast.error(error.response.data?.message)
+ try {
+    if (editId) {
+      // Update Mode
+      const response = await termServices.updateTerm(editId, { name: addTerm });
+      console.log(response.data)
+      setTerms(prevTerms =>
+        prevTerms.map(term =>
+          term._id === editId ? { ...term, name: addTerm } : term
+        )
+      );
+      toast.success("Term updated successfully");
+      setEditId(null); // Reset edit mode
+    } else {
+      // Create Mode
+      const response = await termServices.createTerm({ name: addTerm });
+      setTerms(prev => [...prev, response.data.term]);
+      toast.success("Term created successfully");
     }
 
+    setAddTerm("");
+    setShowTerm(false);
+
+  } catch (error) {
+    console.log("the edit error is:",error)
+    toast.error(error.response?.data?.message || "Something went wrong");
   }
+};
+
 
   const fetchAllTerms = async () => {
   try {
@@ -54,18 +70,25 @@ if(loading){
     try{
        const response= await termServices.deleteTerm(id);
      console.log(response.data)
-     toast.success("term deleted successfully")
+     toast.success("Term deleted successfully")
      setTerms((prevTerms) => prevTerms.filter(term => term._id !== id)); //after deleting it filter the deleted item 
 
     }catch(error){
+     toast.error(error.response.data?.message || "Term delete failed ")
       console.log("term deleting error:",error)
     }
     
   }
 
-  const handleUpdate=()=>{
-    
+const handleEdit = (id) => {
+  const termToEdit = terms.find(term => term._id === id);
+  if (termToEdit) {
+    setAddTerm(termToEdit.name); // Prefill form
+    setEditId(id); // Store the id of the term being edited
+    setShowTerm(true); // Show form
   }
+};
+
 
 
   return (
@@ -90,29 +113,32 @@ if(loading){
             className="border  w-[90%] md:w-[50%] p-3 border-black border-2 rounded mb-4" placeholder="Ex: Web Developer"
           />
           <button
-           type="submit"
+           type="submit" 
            className="bg-blue-500 text-base font-bold  w-[90%] md:w-[50%] px-2 py-3 rounded  text-white font-semibold transition transform active:scale-90">
-            Save Term
+            {editId ? "Update Term" : "Save Term"}
           </button>
         </form>
 
       )}
 
   <table className="  w-full border p-4">
-  <thead className="border p-6">
-    <tr >
+  <thead className="border p-2">
+    <tr  className="text-base bg-gray-100">
       <th className="border-l p-2">SI NO</th>
       <th className="border-l p-6 ">Name</th>
       <th className="border-l p-6 ">Actions</th>
     </tr>
   </thead>
  <tbody className="border text-center">
- {terms.map((term, index) => (
-      <tr key={index}>
+ {terms.map((term,index) => (
+      <tr key={term._id}>
         <td className="border-l border-b p-6">{index + 1}</td>
         <td className="border-l  border-b p-6">{term.name}</td>
         <td className="border-l  border-b space-x-2 p-6">
-           <button className="text-blue-500 "> <FaEdit  onClick={()=>handleUpdate(term._id)} className="w-4  h-4"/></button>
+           <button onClick={()=>handleEdit(term._id)} className="text-blue-500 "> <FaEdit  
+
+            className="w-4  h-4"/>
+            </button>
              <button   onClick={()=>handleDelete(term._id)}  className="text-red-500"><FaTrash className="w-4  h-4"/></button>
         </td>
       </tr>
