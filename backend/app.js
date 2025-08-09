@@ -7,6 +7,7 @@ const categoryRoute = require("./routers/categoryRoute");
 const termRoute = require("./routers/termRoute");
 const resourceRoute = require("./routers/resourceRoute");
 const commentRoute = require("./routers/commentRoute");
+const fileRouter = require("./routers/fileRoutes");
 
 const app = express();
 app.use(cors({
@@ -26,7 +27,7 @@ app.use('/api/auth',userRoute);
  app.use('/api/category',categoryRoute);
   app.use('/api/resource',resourceRoute);
    app.use('/api/comment',commentRoute);
-  
+   app.use('/api/file',fileRouter);
 
 app.get("/", (req, res) => {
     res.send("server is running..")
