@@ -21,7 +21,7 @@ setShowTerm(false)
 toast.success("term creation successfully")
     }catch(error){
         console.log("Term creation error is:", error)
-        toast.error(response)
+        toast.error(error.response.data?.message)
     }
 
   }
