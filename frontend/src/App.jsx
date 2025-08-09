@@ -8,6 +8,7 @@ import SideBar from './components/sideBar'
 import AdminDashboardPage from './pages/admin/adminDashboardPage'
 import UserDashboard from './pages/user/UserDashboard'
 import UserDashboardPage from './pages/user/UserDashboardPage'
+import TermPage from './pages/admin/TermPage'
 
 
 function App() {
@@ -21,12 +22,15 @@ function App() {
       <Route path="/register" element={<RegisterPage />} />
  <Route path="/login" element={<LoginPage />} />
      
-      <Route path="/admin" element={< AdminDashboard/>}>
-          <Route path="dashboard" element={<AdminDashboardPage />} />
+      <Route path="/admin/dashboard" element={< AdminDashboard/>}> //absolute path
+          <Route path="" element={<AdminDashboardPage />} />
+          <Route path="terms" element={<TermPage />} />
           {/* Add more nested admin routes here if needed */}
         </Route>
+         
           <Route path="/user" element={< UserDashboard/>}>
           <Route path="dashboard" element={<UserDashboardPage />} />
+
           {/* Add more nested admin routes here if needed */}
         </Route>
 
