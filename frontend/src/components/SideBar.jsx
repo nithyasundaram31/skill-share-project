@@ -3,13 +3,17 @@ import logo from '../assets/logo.png';
 import { FiLogOut } from 'react-icons/fi';
 import {  FaFolderOpen, FaThList, FaTimes } from 'react-icons/fa';
 import { MdDashboard, MdEventNote } from 'react-icons/md';
-import { Link } from 'react-router-dom';
+import { Link,  } from 'react-router-dom';
 
-function SideBar({ openMobileMenu, setOpenMobileMenu }) {
+import NavBar from './NavBar';
+
+function SideBar({ openMobileMenu, setOpenMobileMenu , handleLogout}) {
 
   const roleInfo = JSON.parse(localStorage.getItem('user'))
 
   console.log(roleInfo)
+
+
 
   const closeButton = () => {
     setOpenMobileMenu(false); //default toggle close so wheni click the close btn it close
@@ -43,7 +47,7 @@ function SideBar({ openMobileMenu, setOpenMobileMenu }) {
               </li>
 
               <li className='flex items-center gap-3'>
-                <FaThList className='text-xl' /> <Link>Category</Link>
+                <FaThList className='text-xl' /> <Link to='/admin/dashboard/category'>Category</Link>
               </li>
 
               <li className='flex items-center gap-3'>
@@ -51,7 +55,7 @@ function SideBar({ openMobileMenu, setOpenMobileMenu }) {
               </li>
 
               <li className='flex items-center gap-3'>
-                <FiLogOut className='text-xl' /><Link> Logout</Link>
+                <FiLogOut className='text-xl' /><button onClick={handleLogout}> Logout</button>
               </li>
 
             </>
@@ -85,13 +89,14 @@ function SideBar({ openMobileMenu, setOpenMobileMenu }) {
 
         </ul>
 
-        
+         
       </div>
-
+ 
 
     </>
 
   );
+
 }
 
 export default SideBar;

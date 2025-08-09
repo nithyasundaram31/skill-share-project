@@ -2,12 +2,14 @@ import React, { useState } from 'react'
 import { FaBars, FaChevronDown } from 'react-icons/fa'
 import { IoNotificationsOutline } from 'react-icons/io5'
 import { MdAccountCircle } from 'react-icons/md'
-import { Link } from 'react-router'
-import SideBar from './sideBar'
+import { Link, useNavigate } from 'react-router'
+import SideBar from './SideBar'
+import { toast } from 'react-toastify'
 
 
 
 function NavBar() {
+    const navigate=useNavigate()
     //store logged in user data in localstorage and get the data here
     const storeUser = JSON.parse(localStorage.getItem("user"))
     console.log(storeUser)
@@ -22,6 +24,13 @@ const [openMobileMenu, setOpenMobileMenu] = useState(false)
     const toggleMobileMenu=()=>{
 setOpenMobileMenu(!openMobileMenu)
     }
+//logout
+      const handleLogout=()=>{
+     localStorage.removeItem("user");
+     navigate("/login")
+     toast.success("logout Successfull")
+    
+      }
     return (
         <>
             <div className=' fixed z-[10] w-full '>
@@ -42,10 +51,10 @@ setOpenMobileMenu(!openMobileMenu)
                             <MdAccountCircle className='md:mr-2  w-10 h-10 text-2xl cursor-pointer' title="Profile" />
                             < FaChevronDown className='' onClick={toggleDropdown} />
                             {openDropdown && (
-                                <div className=' bg-white shadow  p-4 md:w-[10%]  w-[20%] absolute z-20 top-14  right-6  flex flex-col justify-center  '>
+                                <div className=' bg-white shadow  p-4 md:w-[10%]  w-[20%] absolute z-20 top-14 right-6  flex flex-col justify-center'>
                                     <Link className='mb-2 font-semibold hover:text-blue-600 cursor-pointer'> Profile</Link>
                                     <hr className='mb-2  font-semibold ' />
-                                    <Link className='font-semibold hover:text-blue-600 cursor-pointer'>Logout</Link>
+                                    <button onClick={handleLogout} className='text-left font-semibold hover:text-blue-600 cursor-pointer'>Logout</button>
                                 </div>
                             )}
                         </div>
@@ -56,7 +65,7 @@ setOpenMobileMenu(!openMobileMenu)
 
                 </div>
             </div>
-               <SideBar openMobileMenu={openMobileMenu} setOpenMobileMenu={setOpenMobileMenu}/>
+               <SideBar openMobileMenu={openMobileMenu} setOpenMobileMenu={setOpenMobileMenu} handleLogout={handleLogout}/>
         </>
      
     )
