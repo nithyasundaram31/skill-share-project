@@ -3,9 +3,20 @@ const Resource = require('../models/Resource');
 // Create Resource
 exports.createResource = async (req, res) => {
   try {
-    const { title, term, category, videoUrl } = req.body;
-    const resource = await Resource.create({ title, term, category, videoUrl });
-    res.status(201).json(resource);
+    const { title, term, category, type, url } = req.body;
+
+    const resource = await Resource.create({
+      title,
+      term,
+      category,
+      type,
+      url
+    });
+
+    res.status(201).json({
+      message: "Resource created successfully",
+      resource
+    });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -14,7 +25,9 @@ exports.createResource = async (req, res) => {
 // Get All Resources
 exports.getResources = async (req, res) => {
   try {
-    const resources = await Resource.find().populate('category');
+    const resources = await Resource.find()
+      .populate('term', 'name')
+      .populate('category', 'name');
     res.json(resources);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -24,18 +37,39 @@ exports.getResources = async (req, res) => {
 // Get Single Resource
 exports.getResourceById = async (req, res) => {
   try {
-    const resource = await Resource.findById(req.params.id).populate('category');
+    const resource = await Resource.findById(req.params.id)
+      .populate('term', 'name')
+      .populate('category', 'name');
+
+    if (!resource) {
+      return res.status(404).json({ error: 'Resource not found' });
+    }
+
     res.json(resource);
   } catch (error) {
-    res.status(404).json({ error: 'Resource not found' });
+    res.status(500).json({ error: error.message });
   }
 };
 
 // Update Resource
 exports.updateResource = async (req, res) => {
   try {
-    const updated = await Resource.findByIdAndUpdate(req.params.id, req.body, { new: true });
-    res.json(updated);
+    const updated = await Resource.findByIdAndUpdate(
+      req.params.id, 
+      req.body, 
+      { new: true }
+    )
+    .populate('term', 'name')
+    .populate('category', 'name');
+
+    if (!updated) {
+      return res.status(404).json({ error: 'Resource not found' });
+    }
+
+    res.json({
+      message: "Resource updated successfully",
+      updated
+    });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -44,8 +78,13 @@ exports.updateResource = async (req, res) => {
 // Delete Resource
 exports.deleteResource = async (req, res) => {
   try {
-    await Resource.findByIdAndDelete(req.params.id);
-    res.json({ message: 'Resource deleted' });
+    const deleted = await Resource.findByIdAndDelete(req.params.id);
+
+    if (!deleted) {
+      return res.status(404).json({ error: 'Resource not found' });
+    }
+
+    res.json({ message: 'Resource deleted successfully' });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

@@ -1,13 +1,27 @@
-// models/Resource.js
 const mongoose = require('mongoose');
 
 const resourceSchema = new mongoose.Schema({
-  title: { type: String, required: true },
-  term: { type: String, required: true },
- category: { type: mongoose.Schema.Types.ObjectId, ref: 'Category', required: true },
-  videoUrl: { type: String, required: true },
-  likes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
-  createdAt: { type: Date, default: Date.now }
-});
+  title: { type: String, required: true, trim: true },
+
+  // Link to Term
+  term: { type: mongoose.Schema.Types.ObjectId, ref: 'Term', required: true },
+
+  // Link to Category
+  category: { type: mongoose.Schema.Types.ObjectId, ref: 'Category', required: true },
+
+  // Type of resource
+  type: { 
+    type: String, 
+    enum: ['video', 'pdf', 'article', 'link'], 
+    required: true 
+  },
+
+  // URL for resource
+  url: { type: String, required: true },
+
+  // Likes by users
+  likes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]
+
+}, { timestamps: true });
 
 module.exports = mongoose.model('Resource', resourceSchema);
