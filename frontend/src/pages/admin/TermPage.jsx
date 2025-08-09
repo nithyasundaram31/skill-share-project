@@ -58,6 +58,61 @@ toast.success("term creation successfully")
 
       )}
 
+    <table className=" overflow-y-auto w-full border p-4">
+  <thead className="border p-6">
+    <tr >
+      <th className="border-l p-2">SI NO</th>
+      <th className="border-l p-6 ">Name</th>
+      <th className="border-l p-6 ">Actions</th>
+    </tr>
+  </thead>
+
+  <tbody className="border text-center ">
+    <tr >
+      <td className="border-l p-6">1</td>
+      <td className="border-l  p-6" >Web service</td>
+      <td className="border-l  p-6">web developer</td>
+    </tr>
+
+    <tr className="border">
+      <td className="border-l p-6">2</td>
+      <td className="border-l p-6">web developer</td>
+      <td className="border-l p-6">Web service</td>
+    </tr>
+
+     <tr >
+      <td className="border-l p-6">1</td>
+      <td className="border-l  p-6" >Web service</td>
+      <td className="border-l  p-6">web developer</td>
+    </tr>
+     <tr >
+      <td className="border-l p-6">1</td>
+      <td className="border-l  p-6" >Web service</td>
+      <td className="border-l  p-6">web developer</td>
+    </tr>
+     <tr >
+      <td className="border-l p-6">1</td>
+      <td className="border-l  p-6" >Web service</td>
+      <td className="border-l  p-6">web developer</td>
+    </tr>
+     <tr >
+      <td className="border-l p-6">1</td>
+      <td className="border-l  p-6" >Web service</td>
+      <td className="border-l  p-6">web developer</td>
+    </tr>
+     <tr >
+      <td className="border-l p-6">1</td>
+      <td className="border-l  p-6" >Web service</td>
+      <td className="border-l  p-6">web developer</td>
+    </tr>
+     <tr >
+      <td className="border-l p-6">1</td>
+      <td className="border-l  p-6" >Web service</td>
+      <td className="border-l  p-6">web developer</td>
+    </tr>
+  </tbody>
+</table>
+
     </div>
   );
 }
