@@ -4,11 +4,12 @@ import RegisterPage from './pages/RegisterPage'
 import { ToastContainer } from 'react-toastify'
 import LoginPage from './pages/LoginPage'
 import AdminDashboard from './pages/admin/AdminDashboard'
-import SideBar from './components/sideBar'
+
 import AdminDashboardPage from './pages/admin/adminDashboardPage'
 import UserDashboard from './pages/user/UserDashboard'
 import UserDashboardPage from './pages/user/UserDashboardPage'
 import TermPage from './pages/admin/TermPage'
+import CategoryPage from './pages/admin/CategoryPage'
 
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
       <Route path="/admin/dashboard" element={< AdminDashboard/>}> //absolute path
           <Route path="" element={<AdminDashboardPage />} />
           <Route path="terms" element={<TermPage />} />
+          <Route path="category" element={< CategoryPage/>} />
           {/* Add more nested admin routes here if needed */}
         </Route>
          
