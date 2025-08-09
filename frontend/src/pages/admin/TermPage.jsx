@@ -8,7 +8,7 @@ function TermPage() {
   const  [term,setTerm]=useState('')
 
   const handleButton=()=>{
-setShowTerm(true)
+setShowTerm(!showTerm)
   }
   const  termSubmit= async(e)=>{
     e.preventDefault();
@@ -42,7 +42,7 @@ toast.success("term creation successfully")
       </button>
 
       {showTerm && (
-        <form onSubmit={termSubmit} className="border p-4 py-6  w-full flex flex-col items-center shadow ">
+        <form onSubmit={termSubmit} className="border p-4 py-6  w-full flex flex-col items-center shadow mb-4 ">
           <label className="text-xl font-semibold mb-2">Name</label>
           <input 
            value={term}
