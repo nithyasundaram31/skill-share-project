@@ -4,19 +4,22 @@ const Term = require('../models/Term');
 exports.createTerm = async (req, res) => {
   try {
     const { name } = req.body;
+
+    // 1. Check if term already exists
+    const existingTerm = await Term.findOne({ name });
+    if (existingTerm) {
+      return res.status(400).json({ message: 'Term already exists' });
+    }
+
+    // 2. Create new term
     const term = await Term.create({ name });
-      const existingTerm = await User.findOne({ name });
-    
-            if (existingTerm) {
-                return res.status(400).json({ message: 'term already exists' });
-            }
-            console.log(existingTerm)
-    
-    res.status(201).json({term, message:"Term creation sucessfully"});
+
+    res.status(201).json({ term, message: "Term created successfully" });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
 };
+
 
 
 // Get All Terms
