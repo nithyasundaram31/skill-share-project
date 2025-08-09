@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import termServices from "../../services/termServices";
 import { toast } from "react-toastify";
-import { FaEdit, FaTrash } from "react-icons/fa";
+import { FaEdit, FaSpinner, FaTrash } from "react-icons/fa";
+
 
 function TermPage() {
 
@@ -22,12 +23,8 @@ setShowTerm(!showTerm)
       // Update Mode
       const response = await termServices.updateTerm(editId, { name: addTerm });
       console.log(response.data)
-      setTerms(prevTerms =>
-        prevTerms.map(term =>
-          term._id === editId ? { ...term, name: addTerm } : term
-        )
-      );
       toast.success("Term updated successfully");
+      fetchAllTerms()
       setEditId(null); // Reset edit mode
     } else {
       // Create Mode
@@ -61,10 +58,14 @@ setShowTerm(!showTerm)
   useEffect(()=>{
 fetchAllTerms();
   },[])
-if(loading){
 
-    return <div className="text-center p-6 "> Loading </div>
-  } 
+
+  if(loading){
+   return <div className="text-center text-xl p-6 "> <FaSpinner className="animate-spin text-gray-500" size={40}/> </div>
+  }
+
+   
+  
   
   const handleDelete=async(id)=>{
     try{
@@ -99,7 +100,7 @@ const handleEdit = (id) => {
 
       <button
         onClick={handleButton}
-        className="mb-4 w-[90%] md:w-[40%] px-4 py-4 bg-green-500 text-white text-xl font-semibold transition hover:bg-green-600 transform active:scale-90"
+        className="mb-4 w-[90%] md:w-[40%] rounded px-4 py-4 bg-green-500 text-white text-xl font-semibold transition hover:bg-green-600 transform active:scale-90"
       >
         Add New Term
       </button>
