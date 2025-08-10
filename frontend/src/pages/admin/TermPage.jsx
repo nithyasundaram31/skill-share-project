@@ -29,7 +29,7 @@ setShowTerm(!showTerm)
     } else {
       // Create Mode
       const response = await termServices.createTerm({ name: addTerm });
-      setTerms(prev => [...prev, response.data.term]);
+      setTerms(prev => [...prev, response.data.term]); //[...prev, newItem]
       toast.success("Term created successfully");
     }
 
@@ -75,7 +75,7 @@ fetchAllTerms();
      setTerms((prevTerms) => prevTerms.filter(term => term._id !== id)); //after deleting it filter the deleted item 
 
     }catch(error){
-     toast.error(error.response.data?.message || "Term delete failed ")
+     toast.error(error.response.data?.message ||"failed to delete term")
       console.log("term deleting error:",error)
     }
     
@@ -123,19 +123,19 @@ const handleEdit = (id) => {
       )}
 
   <table className="  w-full border p-4">
-  <thead className="border p-2">
+  <thead className="border ">
     <tr  className="text-base bg-gray-100">
       <th className="border-l p-2">SI NO</th>
-      <th className="border-l p-6 ">Name</th>
-      <th className="border-l p-6 ">Actions</th>
+      <th className="border-l  ">Name</th>
+      <th className="border-l  ">Actions</th>
     </tr>
   </thead>
  <tbody className="border text-center">
  {terms.map((term,index) => (
       <tr key={term._id}>
-        <td className="border-l border-b p-6">{index + 1}</td>
-        <td className="border-l  border-b p-6">{term.name}</td>
-        <td className="border-l  border-b space-x-2 p-6">
+        <td className="border-l border-b p-4">{index + 1}</td>
+        <td className="border-l  border-b p-4">{term.name}</td>
+        <td className="border-l  border-b space-x-2 p-4">
            <button onClick={()=>handleEdit(term._id)} className="text-blue-500 "> <FaEdit  
 
             className="w-4  h-4"/>
