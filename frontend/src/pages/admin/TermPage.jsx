@@ -122,7 +122,8 @@ const handleEdit = (id) => {
 
       )}
 
-  <table className="  w-full border p-4">
+{terms.length===0?<div className='text-gray-700'>No data found</div> :(
+<table className="  w-full border p-4">
   <thead className="border ">
     <tr  className="text-base bg-gray-100">
       <th className="border-l p-2">SI NO</th>
@@ -150,6 +151,9 @@ const handleEdit = (id) => {
 </table>
     
 
+
+)
+  }
     </div>
   );
 }
