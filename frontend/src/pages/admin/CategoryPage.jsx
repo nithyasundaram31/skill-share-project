@@ -114,41 +114,49 @@ setCategory(categoryFind.name)  //prefill in the form
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
                   className='w-[90%] md:w-[50%] border p-4 mb-4  ' placeholder="Eg:frontend developer" />
-                <button onClick={addCategory} className='px-4 py-3 w-[90%] md:w-[50%] rounded  bg-blue-500 text-white  font-semibold transform transition active:scale-90 hover:bg-blue-600 '>save category</button>
+                <button onClick={addCategory} className='px-4 py-3 w-[90%] md:w-[50%] rounded  bg-blue-500 text-white  font-semibold transform transition active:scale-90 hover:bg-blue-600 '>
+                {editId?"Update category":"Create category"}</button>
 
               </form>
 
             </div>
           </>)}
           
-    {categories.length===0?<div className=' text-gray-700 '>No data found </div> :(categories.map((category,index)=>(
-        <table  key={category._id} className='w-full border '>
-          <thead>
-            <tr className='bg-gray-100'>
-              <th className='border-l-2 border-b '>SI NO</th>
-              <th className='border-l border-b p-2' >NAME</th>
-              <th className='border-l border-b p-2'>ACTIONS</th>
-            </tr>
-
-          </thead>
-        
-            <tbody   className='text-center '>
-            <tr >
-              <td className='border-l border-b p-4'>{index+1}</td>
-              <td className='border-l border-b  p-4'>{category.name}</td>
-              <td className='border-l border-b  p-4 space-x-2'>
-                <button onClick={()=>handleEdit(category._id)} className='text-blue-500'><FaEdit className="w-4  h-4"/></button>
-                 <button onClick={()=>handleDelete(category._id)} className='text-red-500'><FaTrash className="w-4  h-4"/></button>
-              </td>
-
-            </tr>
-           
-          </tbody>
-        
-          
-        </table>
-)))}
-
+    {categories.length === 0 ? (
+  <div className='text-gray-700'>No data found</div>
+) : (
+  <table className='w-full border'>
+    <thead>
+      <tr className='bg-gray-100'>
+        <th className='border-l-2 border-b'>SI NO</th>
+        <th className='border-l border-b p-2'>NAME</th>
+        <th className='border-l border-b p-2'>ACTIONS</th>
+      </tr>
+    </thead>
+    <tbody className='text-center'>
+      {categories.map((category, index) => (
+        <tr key={category._id}>
+          <td className='border-l border-b p-4'>{index + 1}</td>
+          <td className='border-l border-b p-4'>{category.name}</td>
+          <td className='border-l border-b p-4 space-x-2'>
+            <button
+              onClick={() => handleEdit(category._id)}
+              className='text-blue-500'
+            >
+              <FaEdit className="w-4 h-4" />
+            </button>
+            <button
+              onClick={() => handleDelete(category._id)}
+              className='text-red-500'
+            >
+              <FaTrash className="w-4 h-4" />
+            </button>
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+)}
 
       </div>
 
