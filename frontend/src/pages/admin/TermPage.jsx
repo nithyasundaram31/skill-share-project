@@ -2,13 +2,14 @@ import { useEffect, useState } from "react";
 import termServices from "../../services/termServices";
 import { toast } from "react-toastify";
 import { FaEdit, FaSpinner, FaTrash } from "react-icons/fa";
+import ResourcePage from "./ResourcePage";
 
 
 function TermPage() {
 
   const [showTerm, setShowTerm] = useState(false);
   const  [addTerm,setAddTerm]=useState('')  // this is a add term
-  const [terms,setTerms]=useState([]) //this is a all gets to fetch
+    const [terms,setTerms]=useState([])
   const [loading,setLoading]=useState(true)
   const [editId, setEditId] = useState(null);
 
@@ -93,6 +94,7 @@ const handleEdit = (id) => {
 
 
   return (
+     <>
     <div className="w-full max-w-[600px] flex flex-col items-center">
       <h1 className="text-3xl text-violet-500 font-bold mb-4 text-center">
         Terms Management
@@ -154,8 +156,13 @@ const handleEdit = (id) => {
 
 )
   }
+  
     </div>
+  
+     </>
+       
   );
-}
 
+}
+ 
 export default TermPage
