@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Route, Routes, Navigate } from 'react-router-dom'
 import RegisterPage from './pages/RegisterPage'
 import { ToastContainer } from 'react-toastify'
@@ -10,6 +10,7 @@ import UserDashboard from './pages/user/UserDashboard'
 import UserDashboardPage from './pages/user/UserDashboardPage'
 import TermPage from './pages/admin/TermPage'
 import CategoryPage from './pages/admin/CategoryPage'
+import ResourcePage from './pages/admin/ResourcePage'
 
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
           <Route path="" element={<AdminDashboardPage />} />
           <Route path="terms" element={<TermPage />} />
           <Route path="category" element={< CategoryPage/>} />
+            <Route path="resource" element={< ResourcePage  />} />
           {/* Add more nested admin routes here if needed */}
         </Route>
          

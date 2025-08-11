@@ -51,7 +51,7 @@ function SideBar({ openMobileMenu, setOpenMobileMenu , handleLogout}) {
               </li>
 
               <li className='flex items-center gap-3'>
-                <FaFolderOpen className='text-xl' /><Link>Resource</Link>
+                <FaFolderOpen className='text-xl' /><Link to='/admin/dashboard/resource'>Resource</Link>
               </li>
 
               <li className='flex items-center gap-3'>
