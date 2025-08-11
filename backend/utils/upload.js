@@ -3,7 +3,7 @@ const path = require('path');
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        const dir = path.join(__dirname, '../uploads');
+        const dir = path.join(__dirname, '../uploads');   //where we have to upload in pdf in project backend we have  to craete a folder  uploads
         cb(null, dir);
     },
     filename: (req, file, cb) => {
