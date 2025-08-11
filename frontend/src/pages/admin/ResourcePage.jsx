@@ -17,6 +17,7 @@ function ResourcePage() {
   const category = useSelector(selectCategory)
   const type = useSelector(selectType)
   const url = useSelector(selectUrl)
+    const [pdfFile, setPdfFile] = useState(null);
   const likes = useSelector(selectLikes)
   const dispatch = useDispatch() //dispatch is update 
 
@@ -26,17 +27,45 @@ function ResourcePage() {
   }
 
   const handleSubmit=async(e)=>{
-e.preventDefault()
-console.log({title, term, category, type, url});
-try{
-const response=await resourceServices.createResource({title,term,category,type,url})
+    e.preventDefault()
+ try {
+   
 
-console.log("resource response is:",response.data)
+    if (type === "pdf" && pdfFile) {
+      // create FormData and append all fields + file
+      const formData = new FormData();
+      formData.append("title", title);
+      formData.append("term", term);
+      formData.append("category", category);
+      formData.append("type", type);
+      formData.append("file", pdfFile); // must match backend multer field name
 
-}catch(error){
-console.log("error creating in resouce:",error)
-}
+     const response = await resourceServices.uploadSingleFile(formData)
+      
+        
+        console.log("file upload response is:",response)
+    } else {
+      // normal JSON for other types (video, link, article)
+    const  response = await resourceServices.createResource({ title, term, category, type, url });
+    
+
+    console.log("resource response is:", response.data);
+    toast.success("Resource created successfully");
+    }
+  } catch (error) {
+    console.log("error creating resource:", error);
+    toast.error("Failed to create resource",error);
   }
+  }
+
+
+
+const handleFileChange = (e) => {
+  if (e.target.files.length > 0) {
+    setPdfFile(e.target.files[0]);  // First file user selected
+  }
+};
+
   //fetch the terms for dropdown purpose
   const fetchAllTerms = async () => {
     try {
@@ -143,16 +172,29 @@ console.log("error creating in resouce:",error)
                     </select>
                   </div>
 
-                  <div className=' flex  flex-col'>
-                    <label className='text-base  font-bold mb-2'>Resource URL</label>
-                    <input
-                    value={url}
-                    onChange={(e)=>dispatch(setUrl(e.target.value))}
-                      type="url"                     // URL  input type
-                      className="w-full border py-2 px-4 mb-4"
-                      placeholder="Eg: https://example.com"
-                    />
-                  </div>
+                 {type === "pdf" ? (
+  <div className="flex flex-col">
+    <label className="text-base font-bold mb-2">Upload PDF File</label>
+    <input 
+      type="file" 
+      accept="application/pdf" 
+      onChange={(e) => handleFileChange(e)} 
+      className="w-full border py-2 px-4 mb-4" 
+    />
+  </div>
+) : (
+  <div className="flex flex-col">
+    <label className="text-base font-bold mb-2">Resource URL</label>
+    <input
+      value={url}
+      onChange={(e) => dispatch(setUrl(e.target.value))}
+      type="url"
+      className="w-full border py-2 px-4 mb-4"
+      placeholder="Eg: https://example.com"
+    />
+  </div>
+)}
+
 
                   <div className='flex justify-center items-center'>
                     <button className='px-4 py-3 w-full md:w-[50%] text-center text-base rounded  bg-blue-500 text-white  font-semibold transform transition active:scale-90 hover:bg-blue-600 '>
