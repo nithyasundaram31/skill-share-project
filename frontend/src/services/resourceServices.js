@@ -12,6 +12,9 @@ return await instance.post("/resource/resources",userData)
       "Content-Type": "multipart/form-data" //we have to  sent the data in multipart formdata becase we cannot sent by JSON it will not acccept in text+ files 
     }
   });
+},
+getResources:async()=>{
+return await instance.get("/resource/resources")
 }
 
 }
