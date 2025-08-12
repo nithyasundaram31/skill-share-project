@@ -21,6 +21,7 @@ function ResourcePage() {
   const [pdfFile, setPdfFile] = useState(null);
   const likes = useSelector(selectLikes)
   const dispatch = useDispatch() //dispatch is update 
+  const [refreshFlag, setRefreshFlag] = useState(false);
 
   const handleButton = () => {
     setShowToggle(!showToggle);
@@ -51,6 +52,7 @@ function ResourcePage() {
         console.log("resource response is:", response.data);
       }
       toast.success("Resource created successfully");
+        setRefreshFlag(prev => !prev);
       dispatch(setTitle(''));
       dispatch(setTerm(""));
       dispatch(setCategory(""));
@@ -219,7 +221,7 @@ function ResourcePage() {
           )}
           
         </div>
- <ResourceCard/>
+ <ResourceCard refreshFlag={refreshFlag}/>
 
       </div>
 

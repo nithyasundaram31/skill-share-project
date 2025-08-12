@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import resourceServices from '../services/resourceServices';
 
-function ResourceCard() {
+function ResourceCard( {refreshFlag}) {
   const [resources, setResources] = useState([]);
 
   const fetchAllResource = async () => {
@@ -14,8 +14,9 @@ function ResourceCard() {
   };
 
   useEffect(() => {
-    fetchAllResource();
-  }, []);
+  fetchAllResource() 
+
+  }, [refreshFlag]);
 
   // Extract video ID from YouTube URL
   const getYouTubeId = (url) => {
