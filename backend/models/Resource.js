@@ -6,6 +6,8 @@ const resourceSchema = new mongoose.Schema({
   // Link to Term
   term: { type: mongoose.Schema.Types.ObjectId, ref: 'Term', required: true },
 
+   description: { type: String, trim: true },
+
   // Link to Category
   category: { type: mongoose.Schema.Types.ObjectId, ref: 'Category', required: true },
 
