@@ -3,11 +3,12 @@ const Resource = require('../models/Resource');
 // Create Resource
 exports.createResource = async (req, res) => {
   try {
-    const { title, term, category, type, url } = req.body;
+    const { title,description, term, category, type, url } = req.body;
 
     const resource = await Resource.create({
-      title,
+      title,        
       term,
+      description,
       category,
       type,
       url
