@@ -11,6 +11,8 @@ import UserDashboardPage from './pages/user/UserDashboardPage'
 import TermPage from './pages/admin/TermPage'
 import CategoryPage from './pages/admin/CategoryPage'
 import ResourcePage from './pages/admin/ResourcePage'
+import VideoPage from './components/VedioPage'
+import ResourceCard from './components/ResourceCard'
 
 
 function App() {
@@ -29,16 +31,22 @@ function App() {
           <Route path="terms" element={<TermPage />} />
           <Route path="category" element={< CategoryPage/>} />
             <Route path="resource" element={< ResourcePage  />} />
+           
+   
+    
+ 
+            
           {/* Add more nested admin routes here if needed */}
         </Route>
          
           <Route path="/user" element={< UserDashboard/>}>
           <Route path="dashboard" element={<UserDashboardPage />} />
 
+                  {/* Public resources */}
           {/* Add more nested admin routes here if needed */}
         </Route>
 
-
+ <Route path="/video/:videoId" element={<VideoPage />} />
     </Routes>
 
 
