@@ -38,39 +38,71 @@ function ResourceCard( {refreshFlag}) {
     }
   };
 
-  return (
-    <div className="w-full max-w-[980px] mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
-      {resources.map((resource) => {
-        const videoId = getYouTubeId(resource.url); //vedio url pass as a argument
-        const thumbnailUrl = videoId   
-          ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`
-          : null;
+  
+      return (
+  <div className="w-full max-w-[980px] mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
+    {resources.map((resource) => {
+      const videoId = getYouTubeId(resource.url);
+      const thumbnailUrl = videoId ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg` : null;
 
-        return (
-          <div
-            key={resource._id}
-            className="bg-gray-200 text-black p-4 rounded shadow cursor-pointer"
-            onClick={() => openVideoPage(resource)}
-          >
-            {/* without thumbnail vedio image src  will blank    */}
-            {thumbnailUrl && (   
-              <img
-                src={thumbnailUrl}
-                alt={resource.title}
-                className="w-full h-auto rounded mb-2 hover:opacity-90 transition"
-              />
-            )}
+      return (
+  <div
+    key={resource._id}
+    className="bg-gray-200 text-black p-4 rounded shadow cursor-pointer"
+    onClick={() => resource.type === 'video' && openVideoPage(resource)}
+  >
+    {resource.type === 'video' && thumbnailUrl && (
+      <img
+        src={thumbnailUrl}
+        alt={resource.title}
+        className="w-full h-auto rounded mb-2"
+      />
+    )}
 
-            {/* Video Info */}
-            <h1 className="font-bold">{resource.title}</h1>
-            <p>{resource.term?.name}</p>
-            <div>{resource.category?.name}</div>
-            <div>{resource.type}</div>
-          </div>
-        );
-      })}
-    </div>
-  );
+    {resource.type === 'pdf' && (
+      <div className="p-4 mb-2 font-bold">PDF Document</div>
+    )}
+
+
+   {resource.type === 'article' && (
+  <div className="p-4 mb-2 font-bold">
+    <a
+      href={resource.url}
+      target="_blank"
+      
+      style={{ color: 'blue', textDecoration: 'underline' }}
+    >
+      {resource.title}
+    </a>
+  </div>
+)}
+
+{resource.type === 'link' && (
+  <div className="p-4 mb-2 font-bold">
+    <a
+      href={resource.url}
+      target="_blank"
+      rel="noopener noreferrer"
+      style={{ color: 'blue', textDecoration: 'underline' }}
+    >
+      {resource.title}
+    </a>
+  </div>
+)}
+
+      
+        <h1 className="font-bold">{resource.title}</h1>
+        <p>{resource.term?.name}</p>
+        <div>{resource.category?.name}</div>
+        <div>{resource.type}</div>
+      
+    
+  </div>
+);
+   })}
+  </div>
+);
+
 }
 
 export default ResourceCard;
