@@ -95,9 +95,9 @@ function ResourceCard({ refreshFlag }) {
               )}
             </div>
 
-            {/* Text content */}
-            <div className="p-4 flex flex-col flex-grow">
-              {resource.type === 'link' && (
+            {/* Text content */} 
+            <div className="p-4 flex flex-col flex-grow">     
+              {resource.type === 'link' && (          //flex grow is it will occupy the leftover space 
                 <a
                   className="underline font-bold text-blue-700 mb-2"
                   href={resource.url}
