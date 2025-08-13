@@ -37,9 +37,10 @@ function ResourcePage() {
     if (type === "pdf" && pdfFile) {
       // Create FormData for file upload
       const formData = new FormData();
-      formData.append("file", pdfFile);
+      formData.append("file", pdfFile); //user Selectedfile
 
       const uploadResponse = await resourceServices.uploadSingleFile(formData);
+      console.log("upload responseIs:",uploadResponse)
 
       // Assuming backend returns the file path like "http://127.0.0.1:5001/uploads/file-xxx.pdf"
       fileUrl = uploadResponse.data.file?.path || uploadResponse.data.path;
@@ -133,8 +134,8 @@ function ResourcePage() {
         <h1 className='text-violet-500 text-center text-3xl font-semibold '>Resource Management</h1>
         <div className='flex justify-end  items-end'>
           <button onClick={handleButton}
-            className=' flex gap-2 mb-4 mr-8 justify-center px-3  items-center py-3 w-[90%] md:w-[20%] lg:w-[18%]  rounded font-semibold transform transition active:scale-90 p-4 hover:bg-green-600 text-white bg-green-500 text-base mb-6'>
-            <FaPlus className=' ' />create resource</button>
+            className=' flex gap-2 mb-4 mr-8 justify-center   items-center py-3 w-[90%] md:w-[25%] lg:w-[18%]  rounded font-semibold transform transition active:scale-90 p-4 hover:bg-green-600 text-white bg-green-500 text-base mb-6'>
+            <FaPlus />create resource</button>
 
         </div>
           

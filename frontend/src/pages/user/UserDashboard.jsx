@@ -1,5 +1,5 @@
 import React from 'react'
-import SideBar from '../../components/sideBar'
+import SideBar from '../../components/SideBar'
 import NavBar from '../../components/NavBar'
 import { Outlet } from 'react-router-dom'
 
@@ -9,7 +9,7 @@ function UserDashboard() {
     <>
     <NavBar/>
     <SideBar/>
-     <div className="p-4">
+     <div className="p-4 ">
           <Outlet /> {/* Show nested page here */}
         </div>
     </>

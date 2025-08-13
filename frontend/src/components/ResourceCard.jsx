@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import resourceServices from '../services/resourceServices';
+import { FaFileAlt, FaFilePdf, FaLink, FaPlay } from 'react-icons/fa';
 
-function ResourceCard( {refreshFlag}) {
+function ResourceCard({ refreshFlag }) {
   const [resources, setResources] = useState([]);
 
   const fetchAllResource = async () => {
@@ -14,14 +15,12 @@ function ResourceCard( {refreshFlag}) {
   };
 
   useEffect(() => {
-  fetchAllResource() 
-
+    fetchAllResource();
   }, [refreshFlag]);
 
-  // Extract video ID from YouTube URL
   const getYouTubeId = (url) => {
     try {
-      if (url.includes("/shorts/")) return null; // skip shorts
+      if (url.includes("/shorts/")) return null;
       const urlObj = new URL(url);
       return urlObj.searchParams.get("v");
     } catch (err) {
@@ -30,89 +29,144 @@ function ResourceCard( {refreshFlag}) {
     }
   };
 
-  // Open video in a new tab
   const openVideoPage = (resource) => {
     const videoId = getYouTubeId(resource.url);
     if (videoId) {
-      window.open(`/video/${videoId}?title=${encodeURIComponent(resource.title)}`, "_blank"); //it will open new tab and take the url param
+      window.open(`/video/${videoId}?title=${encodeURIComponent(resource.title)}`, "_blank");
     }
   };
 
-  
-      return (
-  <div className="w-full max-w-[980px] mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
-    {resources.map((resource) => {
-      const videoId = getYouTubeId(resource.url);
-      const thumbnailUrl = videoId ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg` : null;
+  const handleResourceClick = (resource) => {
+    if (resource.type === 'video') {
+      openVideoPage(resource);
+    } else {
+      window.open(resource.url, "_blank", "noopener noreferrer");
+    }
+  };
 
-      return (
-  <div
-    key={resource._id}
-    className="bg-gray-200 text-black p-4 rounded shadow cursor-pointer"
-    onClick={() => resource.type === 'video' && openVideoPage(resource)}
-  >
-    {resource.type === 'video' && thumbnailUrl && (
-      <img
-        src={thumbnailUrl}
-        alt={resource.title}
-        className="w-full h-auto rounded mb-2"
-      />
-    )}
+  return (
+    <div className="w-full max-w-[1100px] lg:ml-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      {resources.map((resource) => {
+        const videoId = getYouTubeId(resource.url);
+        const thumbnailUrl = videoId ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg` : null;
 
-   {resource.type === 'pdf' && (
-  <div className="p-4 mb-2 font-bold">
-    <a
-      href={resource.url}
-      target="_blank"
-      rel="noopener noreferrer"
-      style={{ color: 'blue', textDecoration: 'underline' }}
-    >
-      Open PDF
-    </a>
-  </div>
-)}
+        return (
+          <div
+            key={resource._id}
+            className="bg-white rounded-lg shadow-lg text-black cursor-pointer overflow-hidden flex flex-col"
+          >
+            {/* Preview area - fixed height for all types */}
+            <div className="h-44 w-full flex items-center justify-center bg-gray-200 overflow-hidden">
+              {resource.type === 'video' && thumbnailUrl && (
+                <div
+                  onClick={() => handleResourceClick(resource)}
+                  className="relative w-full h-full transform transition-all duration-200 hover:scale-105 hover:shadow-xl"
+                >
+                  <img
+                    src={thumbnailUrl}
+                    alt={resource.title}
+                    className="w-full h-full object-cover"
+                  />
+                  {/* playbutton overlay */}
+                  <div className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center">
+                    <div className="w-16 h-16 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+                      <FaPlay className="text-white text-xl ml-1" />
+                    </div>
+                  </div>
+                </div>
+              )}
 
+              {resource.type === 'pdf' && (
+                <div className="w-20 h-20 bg-red-500 bg-opacity-20 rounded-full flex items-center justify-center">
+                  <FaFilePdf size={40} className="text-red-600" />
+                </div>
+              )}
 
+              {resource.type === 'article' && (
+                <div className="w-20 h-20 bg-green-500 bg-opacity-20 rounded-full flex items-center justify-center">
+                  <FaFileAlt size={40} className="text-green-600" />
+                </div>
+              )}
 
-   {resource.type === 'article' && (
-  <div className="p-4 mb-2 font-bold">
-    <a
-      href={resource.url}
-      target="_blank"
-      
-      style={{ color: 'blue', textDecoration: 'underline' }}
-    >
-      {resource.title}
-    </a>
-  </div>
-)}
+              {resource.type === 'link' && (
+                <div className="w-20 h-20 bg-blue-500 bg-opacity-20 rounded-full flex items-center justify-center">
+                  <FaLink size={35} className="text-blue-600" />
+                </div>
+              )}
+            </div>
 
-{resource.type === 'link' && (
-  <div className="p-4 mb-2 font-bold">
-    <a
-      href={resource.url}
-      target="_blank"
-      rel="noopener noreferrer"
-      style={{ color: 'blue', textDecoration: 'underline' }}
-    >
-      {resource.title}
-    </a>
-  </div>
-)}
+            {/* Text content */}
+            <div className="p-4 flex flex-col flex-grow">
+              {resource.type === 'link' && (
+                <a
+                  className="underline font-bold text-blue-700 mb-2"
+                  href={resource.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  View Link
+                </a>
+              )}
+              {resource.type === 'pdf' && (
+                <a
+                  className="underline font-bold text-blue-700 mb-2"
+                  href={resource.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  View Pdf
+                </a>
+              )}
+              {resource.type === 'article' && (
+                <a
+                  className="underline font-bold text-blue-700 mb-2"
+                  href={resource.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  View Article
+                </a>
+              )}
 
-      
-        <h1 className="font-bold">{resource.title}</h1>
-        <p>{resource.term?.name}</p>
-        <div>{resource.category?.name}</div>
-        <div>{resource.type}</div>
-      
-    
-  </div>
-);
-   })}
-  </div>
-);
+              <h1 className="font-semibold text-gray-800 mb-2">
+                <span className="text-black font-bold">Title: </span>
+                {resource.title}
+              </h1>
+              <p className="font-bold mb-2">
+                <span className="text-black font-bold">Term: </span>
+                {resource.term?.name}
+              </p>
+              <div className="font-bold mb-4">
+                <span className="text-black font-bold">Category: </span>
+                {resource.category?.name}
+              </div>
 
+              {/* Buttons at bottom */}
+              <div className="mt-auto flex items-center justify-between">
+                <button className="bg-blue-500 text-white font-semibold rounded text-sm px-2 py-1">Update</button>
+                <button className="bg-red-600 text-white font-semibold rounded text-sm px-2 py-1">Delete</button>
+                {resource.type && (
+                  <div
+                    className={`rounded-full px-3 py-1 text-white text-center text-xs font-semibold ${
+                      resource.type === 'video'
+                        ? 'bg-red-500'
+                        : resource.type === 'link'
+                        ? 'bg-blue-500'
+                        : resource.type === 'article'
+                        ? 'bg-green-500'
+                        : 'bg-gray-500'
+                    }`}
+                  >
+                    {resource.type}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
 }
 
 export default ResourceCard;

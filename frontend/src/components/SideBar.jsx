@@ -25,8 +25,8 @@ function SideBar({ openMobileMenu, setOpenMobileMenu , handleLogout}) {
       {/* // mobile devices small screen sidebar will close. md screen will show when we block */}
 
       <div
-        className={`fixed  top-0 left-0 z-50 bg-white shadow-md h-screen p-6
-      ${openMobileMenu ? "block" : "hidden"} md:block w-[40%] md:w-[15%]`}
+        className={`fixed  top-0 left-0 z-50 bg-white shadow-md h-full p-6
+      ${openMobileMenu ? "block" : "hidden"} md:block w-[40%] md:w-[22%] lg:w-[13%]`}
 
       >
 

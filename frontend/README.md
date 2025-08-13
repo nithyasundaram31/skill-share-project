@@ -70,3 +70,4 @@ function ResourceCard({ refresh }) {
 }
 
 export default ResourceCard;
+//it will open new tab and take the url param

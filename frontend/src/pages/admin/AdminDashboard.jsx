@@ -8,7 +8,7 @@ function AdminDashboard() {
       <SideBar />
       <div className="flex-1">
         <NavBar />
-        <div className="p-4 flex justify-center  items-center mt-16 md:ml-36">
+        <div className="p-4 flex justify-center  items-center mt-16  md: lg:ml-36">
           <Outlet /> {/* Nested routes */}
         </div>
       </div>
