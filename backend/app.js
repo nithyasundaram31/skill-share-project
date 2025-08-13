@@ -8,13 +8,14 @@ const termRoute = require("./routers/termRoute");
 const resourceRoute = require("./routers/resourceRoute");
 const commentRoute = require("./routers/commentRoute");
 const fileRouter = require("./routers/fileRoutes");
+  const path = require('path');
 
 const app = express();
 app.use(cors({
     // origin: 'https://resilient-brioche-1cb6d6.netlify.app', // Replace with your frontend URL
     // credentials: true, // Allow credentials to be sent
 
-    origin: 'http://localhost:5174', // your Netlify frontend URL
+    origin: 'http://localhost:5173', // your Netlify frontend URL
   credentials: true, 
 
 }));
@@ -28,6 +29,11 @@ app.use('/api/auth',userRoute);
   app.use('/api/resource',resourceRoute);
    app.use('/api/comment',commentRoute);
    app.use('/api/file',fileRouter);
+ 
+
+// Serve static uploaded files
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 
 app.get("/", (req, res) => {
     res.send("server is running..")

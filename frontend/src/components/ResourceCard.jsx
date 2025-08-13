@@ -59,9 +59,19 @@ function ResourceCard( {refreshFlag}) {
       />
     )}
 
-    {resource.type === 'pdf' && (
-      <div className="p-4 mb-2 font-bold">PDF Document</div>
-    )}
+   {resource.type === 'pdf' && (
+  <div className="p-4 mb-2 font-bold">
+    <a
+      href={resource.url}
+      target="_blank"
+      rel="noopener noreferrer"
+      style={{ color: 'blue', textDecoration: 'underline' }}
+    >
+      Open PDF
+    </a>
+  </div>
+)}
+
 
 
    {resource.type === 'article' && (
