@@ -15,6 +15,14 @@ return await instance.post("/resource/resources",userData)
 },
 getResources:async()=>{
 return await instance.get("/resource/resources")
+},
+
+updateResource:async(id,userData)=>{
+  return await instance.put(`/resource/resources/${id}`,userData)
+},
+
+deleteResource:async(id)=>{
+  return await instance.delete(`/resource/resources/${id}`)
 }
 
 }

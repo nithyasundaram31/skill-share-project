@@ -1,22 +1,25 @@
-import React, { useEffect, useState } from 'react';
-import resourceServices from '../services/resourceServices';
+import React, { useEffect } from 'react';
 import { FaFileAlt, FaFilePdf, FaLink, FaPlay } from 'react-icons/fa';
 
-function ResourceCard({ refreshFlag }) {
-  const [resources, setResources] = useState([]);
+function ResourceCard({ resources, onUpdate, onDelete, refreshFlag }) {
 
-  const fetchAllResource = async () => {
-    try {
-      const response = await resourceServices.getResources();
-      setResources(response.data);
-    } catch (error) {
-      console.log("error in fetch all resource", error);
+  const PostTime = ({ createdAt }) => {
+    const now = new Date();
+    const created = new Date(createdAt);
+    const diffMs = now - created; // milliseconds difference
+
+    const diffMinutes = Math.floor(diffMs / (1000 * 60));
+    const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+
+    if (diffDays >= 1) {
+      return <p className="text-xs text-gray-500">Posted {diffDays} days ago</p>;
+    } else if (diffHours >= 1) {
+      return <p className="text-xs text-gray-500">Posted {diffHours} hours ago</p>;
+    } else {
+      return <p className="text-xs text-gray-500">Posted {diffMinutes} minutes ago</p>;
     }
-  };
-
-  useEffect(() => {
-    fetchAllResource();
-  }, [refreshFlag]);
+  }
 
   const getYouTubeId = (url) => {
     try {
@@ -43,6 +46,15 @@ function ResourceCard({ refreshFlag }) {
       window.open(resource.url, "_blank", "noopener noreferrer");
     }
   };
+
+  // call the function come from parent
+  const handleDeleteClick = (id) => {
+    onDelete(id); // call parent function
+  }
+
+  const handleUpdateClick = (id) => {
+    onUpdate(id); // Parent function
+  }
 
   return (
     <div className="w-full max-w-[1100px] lg:ml-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -132,19 +144,29 @@ function ResourceCard({ refreshFlag }) {
                 <span className="text-black font-bold">Title: </span>
                 {resource.title}
               </h1>
-              <p className="font-bold mb-2">
-                <span className="text-black font-bold">Term: </span>
+              <p className="font-semi text-gray-800 mb-2">
+                <span className="text-black  font-bold">Term: </span>
                 {resource.term?.name}
               </p>
-              <div className="font-bold mb-4">
+              <div className="font-semibold  text-gray-800 mb-4">
                 <span className="text-black font-bold">Category: </span>
                 {resource.category?.name}
               </div>
 
               {/* Buttons at bottom */}
-              <div className="mt-auto flex items-center justify-between">
-                <button className="bg-blue-500 text-white font-semibold rounded text-sm px-2 py-1">Update</button>
-                <button className="bg-red-600 text-white font-semibold rounded text-sm px-2 py-1">Delete</button>
+              <div className="mt-auto flex items-center justify-between mb-2">
+                <button 
+                  onClick={() => handleUpdateClick(resource._id)} 
+                  className="bg-blue-500 text-white font-semibold rounded text-sm px-2 py-1"
+                >
+                  Update
+                </button>
+                <button 
+                  onClick={() => handleDeleteClick(resource._id)} 
+                  className="bg-red-600 text-white font-semibold rounded text-sm px-2 py-1"
+                >
+                  Delete
+                </button>
                 {resource.type && (
                   <div
                     className={`rounded-full px-3 py-1 text-white text-center text-xs font-semibold ${
@@ -161,6 +183,7 @@ function ResourceCard({ refreshFlag }) {
                   </div>
                 )}
               </div>
+              {resource.createdAt && <PostTime createdAt={resource.createdAt} />}
             </div>
           </div>
         );
@@ -170,3 +193,4 @@ function ResourceCard({ refreshFlag }) {
 }
 
 export default ResourceCard;
+
