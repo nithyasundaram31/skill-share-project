@@ -1,16 +1,21 @@
 const Comment = require('../models/Comment');
 
 // Create Comment
+// Create Comment
 exports.createComment = async (req, res) => {
   try {
-    const { resource, text } = req.body;
-    const user = req.user._id; // from auth middleware
-    const comment = await Comment.create({ resource, user, text });
+    const { resource, text, user } = req.body;
+    let comment = await Comment.create({ resource, user, text });
+
+    // populate the user field before returning
+    comment = await comment.populate("user", "name email");  
+
     res.status(201).json(comment);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
 };
+
 
 // Get Comments for a Resource
 exports.getCommentsByResource = async (req, res) => {
