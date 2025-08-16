@@ -14,8 +14,8 @@ const app = express();
 app.use(cors({
     // origin: 'https://resilient-brioche-1cb6d6.netlify.app', // Replace with your frontend URL
     // credentials: true, // Allow credentials to be sent
-
-    origin: 'http://localhost:5175', // your Netlify frontend URL
+  
+    origin: 'http://localhost:5173', // your Netlify frontend URL
   credentials: true, 
 
 }));

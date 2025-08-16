@@ -90,3 +90,59 @@ exports.deleteResource = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+// Increment views
+exports.incrementViews = async (req, res) => {
+  try {
+    const resource = await Resource.findById(req.params.id);
+    if (!resource) return res.status(404).json({ error: 'Resource not found' });
+
+    resource.views += 1; // increase view count
+    await resource.save();
+
+    res.json({ views: resource.views });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+
+
+exports.likeResource = async (req, res) => {
+  try {
+    const { userId } = req.body; // userId sent from frontend
+    const resource = await Resource.findById(req.params.id);
+
+    if (!resource) return res.status(404).json({ message: "Resource not found" });
+
+    
+    if (!resource.likes.includes(userId)) {
+      resource.likes.push(userId);
+    }
+
+    await resource.save();
+    res.json({ likes: resource.likes.length });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+
+exports.dislikeResource = async (req, res) => {
+  try {
+    const { userId } = req.body; // userId sent from frontend
+    const resource = await Resource.findById(req.params.id);
+
+    if (!resource) return res.status(404).json({ message: "Resource not found" });
+
+    // Add user to dislikes array 
+    if (!resource.dislikes.includes(userId)) {
+      resource.dislikes.push(userId);
+    }
+
+    await resource.save();
+    res.json({ dislikes: resource.dislikes.length });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};

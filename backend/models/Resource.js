@@ -12,17 +12,20 @@ const resourceSchema = new mongoose.Schema({
   category: { type: mongoose.Schema.Types.ObjectId, ref: 'Category', required: true },
 
   // Type of resource
-  type: { 
+  type: {                       
     type: String, 
-    enum: ['video', 'pdf', 'article', 'link'], 
+    enum: ['video', 'pdf', 'blog', 'link'], 
     required: true 
   },
 
   // URL for resource
   url: { type: String, required: true },
+  views: { type: Number, default: 0 } ,
 
   // Likes by users
-  likes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]
+likes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+dislikes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]
+
 
 }, { timestamps: true });
 

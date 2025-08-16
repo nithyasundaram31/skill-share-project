@@ -1,7 +1,21 @@
-import React, { useEffect } from 'react';
-import { FaFileAlt, FaFilePdf, FaLink, FaPlay } from 'react-icons/fa';
+import React, { useEffect, useState } from 'react';
+import { FaFileAlt, FaFilePdf, FaLink, FaPlay, FaThumbsUp } from 'react-icons/fa';
+import resourceServices from '../services/resourceServices';
 
 function ResourceCard({ resources, onUpdate, onDelete, refreshFlag }) {
+  const user = JSON.parse(localStorage.getItem("user")); // example
+  console.log("user received:", user);
+    const[likeToggle,setLikeToggle]=useState(false)
+
+ const likeButton=async(id,)=>{
+  try{
+    const response=await resourceServices.likeResource(id,user.id)
+    console.log("like response is:",response.data)
+setLikeToggle(true)
+  }catch(error){
+  console.log("like error is:",error)
+  }
+ }
 
   const PostTime = ({ createdAt }) => {
     const now = new Date();
@@ -21,6 +35,22 @@ function ResourceCard({ resources, onUpdate, onDelete, refreshFlag }) {
     }
   }
 
+
+  
+    useEffect(()=>{
+  const viewsCount=async(id)=>{
+  try{
+    const response=await resourceServices.incrementViews(id)
+    console.log("views count:",response)
+    setViews(response.data)
+  }catch(error){
+    console.log(error)
+  
+  }
+  }
+  viewsCount()
+    },[])
+
   const getYouTubeId = (url) => {
     try {
       if (url.includes("/shorts/")) return null;
@@ -33,34 +63,31 @@ function ResourceCard({ resources, onUpdate, onDelete, refreshFlag }) {
   };
 
   const openVideoPage = (resource) => {
-    const videoId = getYouTubeId(resource.url);
-    if (videoId) {
-      window.open(`/video/${videoId}?title=${encodeURIComponent(resource.title)}`, "_blank");
-    }
+   
+      window.open(`/video/${resource._id}`, "_blank");
   };
 
   const handleResourceClick = (resource) => {
-    if (resource.type === 'video') {
-      openVideoPage(resource);
-    } else {
-      window.open(resource.url, "_blank", "noopener noreferrer");
-    }
-  };
-
+  if (resource.type === 'video') {
+    openVideoPage(resource); // it pass the id
+  } else {
+    window.open(resource.url, "_blank", "noopener noreferrer");
+  }
+};
   // call the function come from parent
   const handleDeleteClick = (id) => {
     onDelete(id); // call parent function
   }
 
   const handleUpdateClick = (id) => {
-    onUpdate(id); // Parent function
+    onUpdate(id);
   }
 
   return (
-    <div className="w-full max-w-[1100px] lg:ml-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div className="w-full h-full  max-w-[1100px] lg:ml-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {resources.map((resource) => {
-        const videoId = getYouTubeId(resource.url);
-        const thumbnailUrl = videoId ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg` : null;
+        const videoId = getYouTubeId(resource.url); //it will take the youtube vedio id
+        const thumbnailUrl = videoId ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg` : null; //take the vedio thumbnail
 
         return (
           <div
@@ -80,7 +107,7 @@ function ResourceCard({ resources, onUpdate, onDelete, refreshFlag }) {
                     className="w-full h-full object-cover"
                   />
                   {/* playbutton overlay */}
-                  <div className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center">
+                  <div className="absolute inset-0 bg-black bg-opacity-10 flex items-center justify-center">
                     <div className="w-16 h-16 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
                       <FaPlay className="text-white text-xl ml-1" />
                     </div>
@@ -94,7 +121,7 @@ function ResourceCard({ resources, onUpdate, onDelete, refreshFlag }) {
                 </div>
               )}
 
-              {resource.type === 'article' && (
+              {resource.type === 'blog' && (
                 <div className="w-20 h-20 bg-green-500 bg-opacity-20 rounded-full flex items-center justify-center">
                   <FaFileAlt size={40} className="text-green-600" />
                 </div>
@@ -108,7 +135,7 @@ function ResourceCard({ resources, onUpdate, onDelete, refreshFlag }) {
             </div>
 
             {/* Text content */} 
-            <div className="p-4 flex flex-col flex-grow">     
+            <div className="p-4 flex flex-col flex-1  ">     
               {resource.type === 'link' && (          //flex grow is it will occupy the leftover space 
                 <a
                   className="underline font-bold text-blue-700 mb-2"
@@ -129,14 +156,14 @@ function ResourceCard({ resources, onUpdate, onDelete, refreshFlag }) {
                   View Pdf
                 </a>
               )}
-              {resource.type === 'article' && (
+              {resource.type === 'blog' && (
                 <a
                   className="underline font-bold text-blue-700 mb-2"
                   href={resource.url}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  View Article
+                  View Blog
                 </a>
               )}
 
@@ -154,7 +181,7 @@ function ResourceCard({ resources, onUpdate, onDelete, refreshFlag }) {
               </div>
 
               {/* Buttons at bottom */}
-              <div className="mt-auto flex items-center justify-between mb-2">
+              <div className="mt-auto  flex items-center justify-between mb-2">
                 <button 
                   onClick={() => handleUpdateClick(resource._id)} 
                   className="bg-blue-500 text-white font-semibold rounded text-sm px-2 py-1"
@@ -174,7 +201,7 @@ function ResourceCard({ resources, onUpdate, onDelete, refreshFlag }) {
                         ? 'bg-red-500'
                         : resource.type === 'link'
                         ? 'bg-blue-500'
-                        : resource.type === 'article'
+                        : resource.type === 'blog'
                         ? 'bg-green-500'
                         : 'bg-gray-500'
                     }`}
@@ -183,8 +210,13 @@ function ResourceCard({ resources, onUpdate, onDelete, refreshFlag }) {
                   </div>
                 )}
               </div>
-              {resource.createdAt && <PostTime createdAt={resource.createdAt} />}
+              <div>
+                 {resource.createdAt && <PostTime createdAt={resource.createdAt} />}
+               <button onClick={()=>likeButton(resource?._id)}><FaThumbsUp  className="text-gray-500 outline-black" size={20} /> </button>
+              </div>
+             
             </div>
+            
           </div>
         );
       })}
