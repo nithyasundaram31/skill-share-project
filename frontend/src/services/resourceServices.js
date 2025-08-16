@@ -20,10 +20,25 @@ return await instance.get("/resource/resources")
 updateResource:async(id,userData)=>{
   return await instance.put(`/resource/resources/${id}`,userData)
 },
-
+getResourceById:async(id)=>{
+  return await instance.get(`/resource/resources/${id}`)
+},
 deleteResource:async(id)=>{
   return await instance.delete(`/resource/resources/${id}`)
+},
+
+incrementViews:async(id)=>{
+  return await instance.put(`/resource/resources/${id}/view`)
+},
+
+likeResource:async(id,userId)=>{
+  return await instance.post(`/resource/resources/${id}/like`,{userId})
+},
+dislikeResource:async(id,userId)=>{
+  return await instance.post(`/resource/resources/${id}/dislike`,{userId})
 }
+
+
 
 }
 

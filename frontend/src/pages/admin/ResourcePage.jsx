@@ -1,13 +1,14 @@
 
 import React, { useEffect, useState } from 'react'
-import { FaPlus, FaSpinner } from 'react-icons/fa'
+import { FaPlus, FaSearch, FaSpinner } from 'react-icons/fa'
 import { toast } from 'react-toastify';
 import termServices from '../../services/termServices';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectCategory, selectLikes, selectTerm, selectTitle, selectType, selectUrl, setCategory, setTerm, setTitle, setType, setUrl } from '../../redux/features/admin/resourceSlice';
+import { selectCategory, selectDescription, selectLikes, selectTerm, selectTitle, selectType, selectUrl, setCategory, setDescription, setTerm, setTitle, setType, setUrl } from '../../redux/features/admin/resourceSlice';
 import categoryServices from '../../services/categoryServices';
 import resourceServices from '../../services/resourceServices';
 import ResourceCard from '../../components/ResourceCard';
+import { SiPandora } from 'react-icons/si';
 
 function ResourcePage() {
   const [showToggle, setShowToggle] = useState(false);
@@ -16,16 +17,19 @@ function ResourcePage() {
   const [loading, setLoading] = useState(true)
   const [editId, setEditId] = useState(null); // tract editid 
   const [resources, setResources] = useState([]); // resources state
+  const [filterType, setFilterType] = useState("all"); //initial state all in filtered dropdowns
   
   const title = useSelector(selectTitle) //useSelector is read the redux store
   const term = useSelector(selectTerm)
   const category = useSelector(selectCategory)
   const type = useSelector(selectType)
   const url = useSelector(selectUrl)
+  const description=useSelector(selectDescription)
   const [pdfFile, setPdfFile] = useState(null);
   const likes = useSelector(selectLikes)
   const dispatch = useDispatch() //dispatch is update 
   const [refreshFlag, setRefreshFlag] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");  //search
 
   // Resource fetch function 
   const fetchAllResource = async () => {
@@ -47,7 +51,7 @@ function ResourcePage() {
 
     try {
       if(editId){
-        const response = await resourceServices.updateResource(editId,{title,term,category,type,url})
+        const response = await resourceServices.updateResource(editId,{title,description,term,category,type,url})
         console.log("resource updating response is:",response)
         toast.success("Resource updated successfully");
       } else {
@@ -70,14 +74,15 @@ function ResourcePage() {
         }
 
         // Create resource with either uploaded file path or entered URL
-        await resourceServices.createResource({
+      const response=  await resourceServices.createResource({
           title,
+          description,
           term,
           category,
           type,
           url: fileUrl
         });
-
+console.log("resource response is:",response.data)
         toast.success("Resource created successfully");
       }
       
@@ -86,6 +91,7 @@ function ResourcePage() {
 
       // Reset form state
       dispatch(setTitle(""));
+        dispatch(setDescription(""));
       dispatch(setTerm(""));
       dispatch(setCategory(""));
       dispatch(setType(""));
@@ -123,8 +129,9 @@ function ResourcePage() {
   const handleUpdate = (id) => {
     const editResource = resources.find((edit) => edit._id === id)
     if(editResource){
-      dispatch(setTerm(editResource.term)) //prefill in the form
-      dispatch(setCategory(editResource.category))
+      dispatch(setTerm(editResource.term?._id || editResource.term)) //prefill in the form
+           dispatch(setDescription(editResource.description))
+      dispatch(setCategory(editResource.category?._id || editResource.category))
       dispatch(setType(editResource.type))
       dispatch(setTitle(editResource.title))
       dispatch(setUrl(editResource.url))
@@ -143,13 +150,13 @@ function ResourcePage() {
       console.log("Failed to fetch terms");
     } finally {
       setLoading(false);
-    }
-  };
+    } 
+  };  
 
   useEffect(() => {
     fetchAllTerms();
     fetchAllResource(); //all resources
-  }, [])
+  }, []) 
 
   //get all categories
   const fetchCategories = async () => {
@@ -161,8 +168,8 @@ function ResourcePage() {
     } catch (error) {
       console.log("fetch categories error:", error)
     }
-  }
-
+  }  
+    
   useEffect(() => {
     fetchCategories()
   }, [])
@@ -170,16 +177,82 @@ function ResourcePage() {
   if (loading) {
     return <div className='text-center p-4' ><FaSpinner className="animate-spin text-gray-500" size={40} /></div>
   }
+//Filtered list based on dropdown value
+//   const filteredResources = resources.filter(resource => {
+//   if (filterType === "all") return true;
+//   return resource.type === filterType;
+// });
+
+const filteredResources = resources.filter(res => {
+  const matchesType = filterType === "all" || res.type === filterType;
+  const matchesSearch = res.title.toLowerCase().includes(searchQuery.toLowerCase());
+  return matchesType && matchesSearch;
+});
+
+//search types 
+
 
   return (
     <>
       <div className=' mx-auto  w-full  '>
-        <h1 className='text-violet-500 text-center text-3xl font-semibold '>Resource Management</h1>
-        <div className='flex justify-end  items-end'>
-          <button onClick={handleButton}
-            className=' flex gap-2 mb-4 mr-8 justify-center   items-center py-3 w-[90%] md:w-[25%] lg:w-[18%]  rounded font-semibold transform transition active:scale-90 p-4 hover:bg-green-600 text-white bg-green-500 text-base mb-6'>
-            <FaPlus />create resource</button>
-        </div>
+        <h1 className='text-violet-500 text-center text-2xl mb-2 font-semibold '>Resource Management</h1>
+      
+         {/* Desktop - same line */}
+<div className='mb-6  hidden w-[80%] mx-auto mr-14 lg:flex justify-between items-center mb-4 gap-4'>
+  <div className=' flex gap-2 flex-1  '>
+ <div className="flex  flex-1 items-center border-2 rounded-full px-3 py-2 w-64">
+      <input
+       value={searchQuery}
+  onChange={(e) => setSearchQuery(e.target.value)}
+        className="flex-1 outline-none"
+        placeholder="Search"
+      />
+      <FaSearch size={20} color="gray" />
+    </div>  
+      <select value={filterType}
+      onChange={(e) => setFilterType(e.target.value)} className='border px-3  py-2 min-w-[100px]'>
+      <option value="all">All</option>
+      <option value="video">vedio</option>
+      <option value="link">link</option>
+      <option value="pdf">pdf</option>
+       <option value="blog">blog</option>
+    </select>
+  </div>
+  <button onClick={handleButton}
+    className='  flex gap-2 justify-center text-sm whitespace-nowrap items-center py-3 px-4 rounded font-semibold transform transition active:scale-90 hover:bg-green-600 text-white bg-green-500'>
+    <FaPlus className='w-4 h-4'/>create resource
+  </button>
+</div>
+
+{/* Mobile/Tablet - stacked */}
+<div className='lg:hidden'>
+  <span className='flex justify-end items-end'>
+    <button onClick={handleButton}
+      className='flex gap-2 mb-2 mr-2 lg:mr-8 justify-center text-sm whitespace-nowrap items-center py-3 px-2 w-[100%] md:w-[25%] lg:w-[15%] rounded font-semibold transform transition active:scale-90 p-4 hover:bg-green-600 text-white bg-green-500 text-base mb-6'>
+      <FaPlus className='w-4 h-4'/>create resource
+    </button>
+  </span>
+  <div className='flex mb-2 gap-2'>
+     <div className="flex  flex-1 items-center border-2 rounded-full px-3 py-2 w-64">
+      <input
+       value={searchQuery}
+  onChange={(e) => setSearchQuery(e.target.value)}
+        className="flex-1 outline-none"
+        placeholder="Search"
+      />
+      <FaSearch size={16} color="gray" />
+    </div> 
+   
+    <select  onChange={(e) => setFilterType(e.target.value)}  value={filterType} className='w-[20%] border'>
+      <option value="all">All</option>
+      <option value="video">vedio</option>
+      <option value="link">link</option>
+      <option value="pdf">pdf</option>
+       <option value="blog">blog</option>
+    </select>
+  </div>
+</div>
+        
           
         <div className='max-w-[600px] mx-auto '>
           {showToggle && (
@@ -191,7 +264,15 @@ function ResourcePage() {
                     <input
                       value={title}
                       onChange={(e) => dispatch(setTitle(e.target.value))}
-                      className='w-full  border py-2 px-4 mb-4  ' placeholder="Eg:frontend developer" />
+                      className='w-full  border py-2 px-4 mb-4  ' placeholder="Eg:Responsive Web Design with Tailwind CSS" />
+                  </div>
+
+                    <div className=' flex  flex-col'>
+                    <label className='text-base  font-bold mb-2'>Description</label>
+                    <textarea
+                      value={description}
+                      onChange={(e) => dispatch(setDescription(e.target.value))}
+                      className='w-full  border py-2 px-4 mb-4  ' placeholder="" />
                   </div>
 
                   <div className=' flex  flex-col'>
@@ -227,7 +308,7 @@ function ResourcePage() {
                       <option>video</option>
                       <option>pdf</option>
                       <option>link</option>
-                      <option>article</option>
+                      <option>blog</option>
                     </select>
                   </div>
 
@@ -267,7 +348,7 @@ function ResourcePage() {
 
         {/* pass the props as a cild component */}
         <ResourceCard 
-          resources={resources}
+          resources={filteredResources}
           onUpdate={handleUpdate}
           onDelete={handleDelete}
           refreshFlag={refreshFlag}

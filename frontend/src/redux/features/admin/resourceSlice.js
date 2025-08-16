@@ -5,17 +5,22 @@ const  resourceSlice=createSlice({
      name: 'resource',
     initialState: {
        title: '',
+       description:'',
        term: '',
        category:"",
        type:"",
        url:"",
-       likes:[]
+       likes:[],
+       dislike:[],
 
     },
     reducers: {
         setTitle: (state, action) => {     //The state is the current data stored in Redux for a particular slice.eg:state = { title: "Old Title",term: "JavaScript"}
          state.title = action.payload;  //An action is an instruction you send to Redux to tell it what you want to do.
-        },                               //The payload is the data you send along with the action.(setTitle("react"))
+        },  
+     setDescription: (state, action) => {
+            state.description= action.payload;
+        },                             //The payload is the data you send along with the action.(setTitle("react"))
         setTerm: (state, action) => {      //  // state → current slice data  . action.payload → new value to store
             state.term = action.payload;    
         },
@@ -30,15 +35,20 @@ const  resourceSlice=createSlice({
         },
          setLikes: (state, action) => {
             state.likes = action.payload;
+        },
+        setDisLike: (state, action) => {
+            state.dislike = action.payload;
         }
     }
 })
 
-export const { setTitle,setTerm,setCategory,setType,setUrl,setLikes } = resourceSlice.actions;
+export const { setTitle,setTerm,setCategory,setType,setUrl,setLikes,setDescription,setDisLike } = resourceSlice.actions;
 export const  selectTitle=(state)=>state.resource.title
+export const  selectDescription=(state)=>state.resource.description
 export const  selectTerm=(state)=>state.resource.term
 export const  selectCategory=(state)=>state.resource.category
 export const  selectType=(state)=>state.resource.type
 export const  selectUrl=(state)=>state.resource.url
 export const  selectLikes=(state)=>state.resource.likes
+export const  selectDisLike=(state)=>state.resource.dislike
 export default resourceSlice.reducer;
