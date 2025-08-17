@@ -35,6 +35,7 @@ function ResourcePage() {
   const fetchAllResource = async () => {
     try {
       const response = await resourceServices.getResources();
+      console.log("get all resources:",response.data)
       setResources(response.data);
     } catch (error) {
       console.log("error in fetch all resource", error);
@@ -178,10 +179,6 @@ console.log("resource response is:",response.data)
     return <div className='text-center p-4' ><FaSpinner className="animate-spin text-gray-500" size={40} /></div>
   }
 //Filtered list based on dropdown value
-//   const filteredResources = resources.filter(resource => {
-//   if (filterType === "all") return true;
-//   return resource.type === filterType;
-// });
 
 const filteredResources = resources.filter(res => {
   const matchesType = filterType === "all" || res.type === filterType;
@@ -189,7 +186,6 @@ const filteredResources = resources.filter(res => {
   return matchesType && matchesSearch;
 });
 
-//search types 
 
 
   return (
@@ -352,6 +348,7 @@ const filteredResources = resources.filter(res => {
           onUpdate={handleUpdate}
           onDelete={handleDelete}
           refreshFlag={refreshFlag}
+           
         />
       </div>
     </>

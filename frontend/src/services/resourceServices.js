@@ -27,16 +27,16 @@ deleteResource:async(id)=>{
   return await instance.delete(`/resource/resources/${id}`)
 },
 
-incrementViews:async(id)=>{
-  return await instance.put(`/resource/resources/${id}/view`)
+incrementViews:async(id,userId)=>{
+  return await instance.put(`/resource/resources/${id}/view`,{ userId })
 },
 
-likeResource:async(id,userId)=>{
-  return await instance.post(`/resource/resources/${id}/like`,{userId})
+toggleLike:async(id, userId)=>{
+  return await instance.put(`/resource/like/${id}`,{ userId })
 },
-dislikeResource:async(id,userId)=>{
-  return await instance.post(`/resource/resources/${id}/dislike`,{userId})
-}
+// dislikeResource:async(id,userId)=>{
+//   return await instance.post(`/resource/resources/${id}/dislike`,{userId})
+// }
 
 
 
