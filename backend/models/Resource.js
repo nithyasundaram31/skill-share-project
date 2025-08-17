@@ -21,6 +21,7 @@ const resourceSchema = new mongoose.Schema({
   // URL for resource
   url: { type: String, required: true },
   views: { type: Number, default: 0 } ,
+   viewers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }] ,
 
   // Likes by users
 likes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],

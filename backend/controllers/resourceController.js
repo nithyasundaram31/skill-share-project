@@ -1,12 +1,12 @@
 const Resource = require('../models/Resource');
-
+const mongoose = require('mongoose');
 // Create Resource
 exports.createResource = async (req, res) => {
   try {
-    const { title,description, term, category, type, url } = req.body;
+    const { title, description, term, category, type, url } = req.body;
 
     const resource = await Resource.create({
-      title,        
+      title,
       term,
       description,
       category,
@@ -56,12 +56,12 @@ exports.getResourceById = async (req, res) => {
 exports.updateResource = async (req, res) => {
   try {
     const updated = await Resource.findByIdAndUpdate(
-      req.params.id, 
-      req.body, 
+      req.params.id,
+      req.body,
       { new: true }
     )
-    .populate('term', 'name')
-    .populate('category', 'name');
+      .populate('term', 'name')
+      .populate('category', 'name');
 
     if (!updated) {
       return res.status(404).json({ error: 'Resource not found' });
@@ -92,57 +92,80 @@ exports.deleteResource = async (req, res) => {
 };
 
 // Increment views
+
+
 exports.incrementViews = async (req, res) => {
   try {
-    const resource = await Resource.findById(req.params.id);
-    if (!resource) return res.status(404).json({ error: 'Resource not found' });
+    const { id } = req.params;
+    const { userId } = req.body;
+    if (!userId) {
+      return res.status(400).json({ error: 'User ID is required' });
+    }
+    const userIdObjectId = new mongoose.Types.ObjectId(userId);
 
-    resource.views += 1; // increase view count
-    await resource.save();
+    const resource = await Resource.findById(id);
+    if (!resource) {
+      return res.status(404).json({ error: 'Resource not found' });
+    }
 
-    res.json({ views: resource.views });
+    // Initialize viewers array if it doesn't exist
+    if (!resource.viewers) {
+      resource.viewers = [];
+    }
+
+    // Filter out null/undefined values and check if user already viewed
+    const cleanViewers = resource.viewers.filter(viewer => viewer !== null && viewer !== undefined);
+    const alreadyViewed = cleanViewers.some(viewer => {
+      if (!viewer) return false;
+      const isMatch = viewer.toString() === userIdObjectId.toString();
+
+      return isMatch;
+    });
+    if (!alreadyViewed) {
+      resource.viewers.push(userIdObjectId);
+    }
+    resource.viewers = cleanViewers.concat(alreadyViewed ? [] : [userIdObjectId]);
+    resource.views = resource.viewers.length;
+    const savedResource = await resource.save();
+    res.json({ views: savedResource.views });
+
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: 'Internal server error' });
   }
 };
 
+// controllers/resourceController.js
+exports.toggleLike = async (req, res) => {
+  const { id } = req.params;      // resource id
+  const { userId } = req.body;    // logged-in user id
 
-
-exports.likeResource = async (req, res) => {
   try {
-    const { userId } = req.body; // userId sent from frontend
-    const resource = await Resource.findById(req.params.id);
-
+    const resource = await Resource.findById(id);
     if (!resource) return res.status(404).json({ message: "Resource not found" });
 
-    
-    if (!resource.likes.includes(userId)) {
+    let liked;
+
+    // Check if already liked (convert both to string for safe comparison)
+    if (resource.likes.some(u => u.toString() === userId.toString())) {
+      // remove like
+      resource.likes = resource.likes.filter(
+        u => u.toString() !== userId.toString()
+      );
+      liked = false;
+    } else {
+      // add like (cast to ObjectId for consistency)
       resource.likes.push(userId);
+      liked = true;
     }
 
     await resource.save();
-    res.json({ likes: resource.likes.length });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-};
 
-
-exports.dislikeResource = async (req, res) => {
-  try {
-    const { userId } = req.body; // userId sent from frontend
-    const resource = await Resource.findById(req.params.id);
-
-    if (!resource) return res.status(404).json({ message: "Resource not found" });
-
-    // Add user to dislikes array 
-    if (!resource.dislikes.includes(userId)) {
-      resource.dislikes.push(userId);
-    }
-
-    await resource.save();
-    res.json({ dislikes: resource.dislikes.length });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
+    res.json({
+      liked,
+      likesCount: resource.likes.length
+    });
+  } catch (error) {
+    console.log("Toggle like error:", error);
+    res.status(500).json({ message: "Internal server error" });
   }
 };
