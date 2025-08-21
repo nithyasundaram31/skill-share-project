@@ -5,14 +5,16 @@ import { ToastContainer } from 'react-toastify'
 import LoginPage from './pages/LoginPage'
 import AdminDashboard from './pages/admin/AdminDashboard'
 
-import AdminDashboardPage from './pages/admin/adminDashboardPage'
+import AdminDashboardPage from './pages/admin/AdminDashboardPage'
 import UserDashboard from './pages/user/UserDashboard'
 import UserDashboardPage from './pages/user/UserDashboardPage'
 import TermPage from './pages/admin/TermPage'
 import CategoryPage from './pages/admin/CategoryPage'
 import ResourcePage from './pages/admin/ResourcePage'
-import VideoPage from './components/VedioPage'
+
 import ResourceCard from './components/ResourceCard'
+import VideoPage from './pages/admin/VideoPage'
+import Profile from './components/Profile'
 
 
 function App() {
@@ -31,7 +33,7 @@ function App() {
           <Route path="terms" element={<TermPage />} />
           <Route path="category" element={< CategoryPage/>} />
             <Route path="resource" element={< ResourcePage  />} />
-           
+           <Route path='profile/:id' element={<Profile/>}/>
    
     
  
@@ -39,8 +41,11 @@ function App() {
           {/* Add more nested admin routes here if needed */}
         </Route>
          
-          <Route path="/user" element={< UserDashboard/>}>
-          <Route path="dashboard" element={<UserDashboardPage />} />
+          <Route path="/user/dashboard" element={< UserDashboard/>}>
+          <Route path="" element={<UserDashboardPage />} />
+           <Route path='profile/:id' element={<Profile/>}/>
+            <Route path="resource" element={< ResourcePage  />} />
+   
 
                   {/* Public resources */}
           {/* Add more nested admin routes here if needed */}

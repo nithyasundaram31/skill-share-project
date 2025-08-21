@@ -71,3 +71,18 @@ function ResourceCard({ refresh }) {
 
 export default ResourceCard;
 //it will open new tab and take the url param
+
+
+
+
+ ------------------------------------------------------------
+| Sidebar      |  📊 Dashboard   | 👤 Admin ▼                 |
+| 📚 Resources |------------------------------------------------
+| 📝 Category  |  [ Resources: 120 ] [ Users: 58 ] [ Terms: 8 ]
+| 👥 Users     |------------------------------------------------
+| ⚙️ Settings  |  [  Chart: Uploads per Day  ]   [ Pie Chart  ]
+|              |------------------------------------------------
+|              |  Recent Resources Table                       |
+|              |   # | Title        | Type  | Views | Likes    |
+|              |   1 | React Intro  | Video |  12   |   5      |
+ ------------------------------------------------------------
