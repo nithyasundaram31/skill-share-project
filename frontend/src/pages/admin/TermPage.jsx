@@ -95,7 +95,7 @@ const handleEdit = (id) => {
 
   return (
      <>
-    <div className="w-full max-w-[600px] flex flex-col items-center">
+    <div className="w-full max-w-[600px]  mx-auto flex justify-center  flex-col items-center">
       <h1 className="text-3xl text-violet-500 font-bold mb-4 text-center">
         Terms Management
       </h1>

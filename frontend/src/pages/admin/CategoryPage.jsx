@@ -101,7 +101,7 @@ setCategory(categoryFind.name)  //prefill in the form
 
   return (
     <>
-      <div className='w-full max-w-[600px] flex flex-col justify-center items-center p-2'>
+      <div className='w-full max-w-[600px]  mx-auto flex flex-col justify-center items-center p-2'>
         <h1 className='text-3xl  text-violet-500 font-bold  mb-4 '>Category Management</h1>
         <button onClick={handleButton} className='px-4 py-3 w-[90%] md:w-[40%]   rounded font-semibold transform transition active:scale-90 p-4 hover:bg-green-600 text-white bg-green-500 text-xl mb-6'>Add New Category</button>
 
@@ -125,7 +125,7 @@ setCategory(categoryFind.name)  //prefill in the form
     {categories.length === 0 ? (
   <div className='text-gray-700'>No data found</div>
 ) : (
-  <table className='w-full border'>
+  <table className='w-full md:ml-10 border'>
     <thead>
       <tr className='bg-gray-100'>
         <th className='border-l-2 border-b'>SI NO</th>
