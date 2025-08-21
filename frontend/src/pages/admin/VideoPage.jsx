@@ -2,8 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import { FaSearch } from 'react-icons/fa';
 import { useParams } from 'react-router-dom';
-import resourceServices from '../services/resourceServices'; // backend service import
-import commentServices from '../services/commentServices';
+import resourceServices from '../../services/resourceServices'; // backend service import
+import commentServices from '../../services/commentServices';
 import { MdAccountCircle } from 'react-icons/md';
 import { toast } from 'react-toastify';
 
