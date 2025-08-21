@@ -100,10 +100,11 @@ exports.updateProfile = async (req, res) => {
             return res.status(403).json({ error: 'User not found' });
         }
 
-        const { dob, address, gender } = req.body;
-        user.profile.address = address;
-        user.profile.dob = dob;
-        user.profile.gender = gender;
+        const { name, contact } = req.body;
+        // user.profile.address = address;
+        user.name=name;
+        // user.profile.dob = dob;
+        user.profile.contact = contact;
 
         await user.save();
         res.json(user);
@@ -112,5 +113,13 @@ exports.updateProfile = async (req, res) => {
     }
 };
 
-
+// Get all users
+exports.getAllUsers = async (req, res) => {
+    try {
+        const users = await User.find().select('-password'); // exclude password
+        res.status(200).json(users);
+    } catch (err) {
+        res.status(500).json({ message: "Something went wrong.", error: err.message });
+    }
+};
 

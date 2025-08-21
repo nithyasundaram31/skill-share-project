@@ -23,21 +23,21 @@ const userSchema = new mongoose.Schema({
 
 role:{
     type:String,
-    enum:['user', 'admin'],
+    enum:['user','admin'],
     default:'user'
 },
 
   profile:{
-   address: {
-      type: String,
-    },
-    dob: {
-      type: Date,
-    },
-      gender: {
-      type: String,
-      enum: ['male', 'female', 'other'], 
-    },
+  //  address: {
+  //     type: String,
+  //   },
+  //   dob: {
+  //     type: Date,
+  //   },
+   
+    contact:{
+      type: Number,
+    }
    
   }, // Nesting the profile schema
   
