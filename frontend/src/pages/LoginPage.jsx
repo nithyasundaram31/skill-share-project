@@ -18,6 +18,7 @@ try{
     const response= await  authServices.login({ email, password })
             console.log("the login response is:",response)
                 toast.success(response.data.message);
+                localStorage.setItem("token", response.data.token);
          localStorage.setItem("user", JSON.stringify(response.data.user));
 
                 // clear the form
