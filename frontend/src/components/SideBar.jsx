@@ -70,7 +70,7 @@ function SideBar({ openMobileMenu, setOpenMobileMenu , handleLogout}) {
               </li>
 
               <li className='flex items-center gap-3'>
-                <MdEventNote className='text-xl' /><Link>My Resources </Link>
+                <MdEventNote className='text-xl' /><Link  to='/user/dashboard/resource'>My Resources </Link>
               </li>
 
               <li className='flex items-center gap-3'>
