@@ -1,7 +1,7 @@
 const Resource = require('../models/Resource');
 const mongoose = require('mongoose');
-// Create Resource
-exports.createResource = async (req, res) => {
+ // Create Resource
+exports.createResource = async (req, res) => { 
   try {
     const { title, description, term, category, type, url } = req.body;
 

@@ -1,34 +1,42 @@
 import React, { useEffect, useState } from 'react';
 import { FaFileAlt, FaFilePdf, FaLink, FaPlay, FaThumbsUp } from 'react-icons/fa';
 import resourceServices from '../services/resourceServices';
+import { useNavigate } from 'react-router';
 
-function ResourceCard({ resources, onUpdate, onDelete, refreshFlag }) {
-  const user = JSON.parse(localStorage.getItem("user")); // example
+function ResourceCard({ resources, onUpdate, onDelete }) {
+
+  // Local user info from localStorage
+  const user = JSON.parse(localStorage.getItem("user"));
   console.log("user received:", user);
 
-  // Change from single boolean to object map for each resource
-  const [likedMap, setLikedMap] = useState({});
-  // Local copy of resources to manage views
-  const [localResources, setLocalResources] = useState(resources);
+  const navigate = useNavigate();    // useNavigate hook to redirect to video page
 
-  // Initialize likedMap and localResources on mount or when resources change
+  // Track likes for each resource individually
+  // likedMap structure: { resourceId: { liked: true/false, likesCount: number } }
+  const [likedMap, setLikedMap] = useState({});
+
+  const [localResources, setLocalResources] = useState(resources);    // Local copy of resources for managing views updates
+
+  // Initialize likedMap and localResources when resources or user.id change
   useEffect(() => {
     const initMap = {};
     resources.forEach(res => {
       initMap[res._id] = {
         liked: res.likes?.some(u => u.toString() === user.id.toString()),
-        likesCount: res.likes?.length || 0,  // count calculated by array.length
+        likesCount: res.likes?.length || 0,
       };
     });
     setLikedMap(initMap);
     setLocalResources(resources);
   }, [resources, user.id]);
 
-  // Like button handler
+  // Function to handle like button click
   const likeButton = async (id) => {
     try {
       const response = await resourceServices.toggleLike(id, user.id);
       console.log("like response is:", response.data);
+
+      // Update the likedMap state
       setLikedMap(prev => ({
         ...prev,
         [id]: {
@@ -39,28 +47,24 @@ function ResourceCard({ resources, onUpdate, onDelete, refreshFlag }) {
     } catch (error) {
       console.log("like error is:", error);
     }
-  }
+  };
 
-  // Post time display
+  // Component to display time since post
   const PostTime = ({ createdAt }) => {
     const now = new Date();
     const created = new Date(createdAt);
-    const diffMs = now - created; // milliseconds difference
+    const diffMs = now - created;
 
     const diffMinutes = Math.floor(diffMs / (1000 * 60));
     const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
     const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
 
-    if (diffDays >= 1) {
-      return <p className="text-xs text-gray-500">Posted {diffDays} days ago</p>;
-    } else if (diffHours >= 1) {
-      return <p className="text-xs text-gray-500">Posted {diffHours} hours ago</p>;
-    } else {
-      return <p className="text-xs text-gray-500">Posted {diffMinutes} minutes ago</p>;
-    }
-  }
+    if (diffDays >= 1) return <p className="text-xs text-gray-500">Posted {diffDays} days ago</p>;
+    else if (diffHours >= 1) return <p className="text-xs text-gray-500">Posted {diffHours} hours ago</p>;
+    else return <p className="text-xs text-gray-500">Posted {diffMinutes} minutes ago</p>;
+  };
 
-  // Get YouTube ID from URL
+  // Extract YouTube ID from URL
   const getYouTubeId = (url) => {
     try {
       if (url.includes("/shorts/")) return null;
@@ -72,43 +76,29 @@ function ResourceCard({ resources, onUpdate, onDelete, refreshFlag }) {
     }
   };
 
-  // Open video page
-  const openVideoPage = (resource) => {
-    window.open(`/video/${resource._id}`, "_blank");
-  };
-
-  // Handle resource click (video or other types)
+  // Handle click on resource (video or other types)
   const handleResourceClick = async (resource) => {
     await handleView(resource._id); // Increment view count
 
     if (resource.type === 'video') {
-      openVideoPage(resource); // it pass the id
+      navigate(`/video/${resource._id}`); // redirect to video page
     } else {
-      window.open(resource.url, "_blank", "noopener noreferrer");
+      window.open(resource.url, "_blank", "noopener noreferrer"); // open PDF/blog/link
     }
   };
 
-  // Call the function come from parent
-  const handleDeleteClick = (id) => {
-    onDelete(id); // call parent function
-  }
+  // Call parent delete function
+  const handleDeleteClick = (id) => onDelete(id);
 
-  const handleUpdateClick = (id) => {
-    onUpdate(id);
-  }
+  // Call parent update function
+  const handleUpdateClick = (id) => onUpdate(id);
 
-  // Increment views and update localResources
+  // Increment views count and update localResources state
   const handleView = async (id) => {
     try {
-      // check for user
-      if (!user || !user.id) {
-        console.log("User not found or no user ID");
-        return;
-      }
+      if (!user || !user.id) return;
 
-      console.log("Calling incrementViews with:", id, user.id);
       const response = await resourceServices.incrementViews(id, user.id);
-      console.log("the increase views:", response.data);
 
       // Update views in local copy
       setLocalResources(prev =>
@@ -119,31 +109,22 @@ function ResourceCard({ resources, onUpdate, onDelete, refreshFlag }) {
     }
   };
 
-
   return (
     <div className="w-full h-full max-w-[1100px] lg:ml-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {localResources.map((resource) => {
-        const videoId = getYouTubeId(resource.url); // it will take the youtube video id
-        const thumbnailUrl = videoId ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg` : null; // take the video thumbnail
+        const videoId = getYouTubeId(resource.url);
+        const thumbnailUrl = videoId ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg` : null;
 
         return (
           <div
             key={resource._id}
             className="bg-white rounded-lg shadow-lg text-black cursor-pointer overflow-hidden flex flex-col"
           >
-            {/* Preview area - fixed height for all types */}
+            {/* Preview area */}
             <div className="h-44 w-full flex items-center justify-center bg-gray-200 overflow-hidden">
               {resource.type === 'video' && thumbnailUrl && (
-                <div
-                  onClick={() => handleResourceClick(resource)}
-                  className="relative w-full h-full transform transition-all duration-200 hover:scale-105 hover:shadow-xl"
-                >
-                  <img
-                    src={thumbnailUrl}
-                    alt={resource.title}
-                    className="w-full h-full object-cover"
-                  />
-                  {/* play button overlay */}
+                <div onClick={() => handleResourceClick(resource)} className="relative w-full h-full transform transition-all duration-200 hover:scale-105 hover:shadow-xl">
+                  <img src={thumbnailUrl} alt={resource.title} className="w-full h-full object-cover" />
                   <div className="absolute inset-0 bg-black bg-opacity-10 flex items-center justify-center">
                     <div className="w-16 h-16 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
                       <FaPlay className="text-white text-xl ml-1" />
@@ -151,19 +132,16 @@ function ResourceCard({ resources, onUpdate, onDelete, refreshFlag }) {
                   </div>
                 </div>
               )}
-
               {resource.type === 'pdf' && (
                 <div className="w-20 h-20 bg-red-500 bg-opacity-20 rounded-full flex items-center justify-center">
                   <FaFilePdf size={40} className="text-red-600" />
                 </div>
               )}
-
               {resource.type === 'blog' && (
                 <div className="w-20 h-20 bg-green-500 bg-opacity-20 rounded-full flex items-center justify-center">
                   <FaFileAlt size={40} className="text-green-600" />
                 </div>
               )}
-
               {resource.type === 'link' && (
                 <div className="w-20 h-20 bg-blue-500 bg-opacity-20 rounded-full flex items-center justify-center">
                   <FaLink size={35} className="text-blue-600" />
@@ -173,8 +151,6 @@ function ResourceCard({ resources, onUpdate, onDelete, refreshFlag }) {
 
             {/* Text content */}
             <div className="p-4 flex flex-col flex-1">
-
-
               <h1 className="font-semibold text-gray-800 mb-2">
                 <span className="text-black font-bold">Title: </span>
                 {resource.title}
@@ -188,36 +164,28 @@ function ResourceCard({ resources, onUpdate, onDelete, refreshFlag }) {
                 {resource.category?.name}
               </div>
 
-
-
               <div className='flex justify-between items-center'>
                 <div>
                   {resource.createdAt && <PostTime createdAt={resource.createdAt} />}
-                  <button onClick={() => likeButton(resource?._id)}>
+                  <button onClick={() => likeButton(resource._id)}>
                     <FaThumbsUp
                       className={likedMap[resource._id]?.liked ? "text-blue-500" : "text-gray-500"}
                       size={20}
                     />
                   </button>
-
-                  {/* Likes count */}
                   {likedMap[resource._id]?.likesCount > 0 && (
-                    <span className="ml-2 text-sm text-gray-700">
-                      {likedMap[resource._id]?.likesCount}
-                    </span>
+                    <span className="ml-2 text-sm text-gray-700">{likedMap[resource._id]?.likesCount}</span>
                   )}
                 </div>
-
+                {/* //views */}
                 <div className='mt-2'>
-                  {/* Views display */}
-                  <span className="ml-2">{resource.views} views</span>
-
+                  {resource.views>0 &&( 
+                      <span className="ml-2">{resource.views} </span>
+                  )}
+                  <span>views</span>
+                
                 </div>
-
-
-
               </div>
-
 
               <div className='mb-4'>
                 <button
@@ -227,8 +195,9 @@ function ResourceCard({ resources, onUpdate, onDelete, refreshFlag }) {
                   Open {resource.type}
                 </button>
               </div>
-              {/* Buttons at bottom */}
-              <div className="mt-auto flex items-center justify-between mb-2 ">
+
+              {/* Bottom buttons */}
+              <div className="mt-auto flex items-center justify-between mb-2">
                 <button
                   onClick={() => handleUpdateClick(resource._id)}
                   className="bg-blue-500 text-white font-semibold rounded text-sm px-2 py-1"
@@ -242,16 +211,15 @@ function ResourceCard({ resources, onUpdate, onDelete, refreshFlag }) {
                   Delete
                 </button>
                 {resource.type && (
-                  <div
-                    className={`rounded-full px-3 py-1 text-white text-center text-xs font-semibold ${resource.type === 'video'
-                        ? 'bg-red-500'
-                        : resource.type === 'link'
-                          ? 'bg-blue-500'
-                          : resource.type === 'blog'
-                            ? 'bg-green-500'
-                            : 'bg-gray-500'
-                      }`}
-                  >
+                  <div className={`rounded-full px-3 py-1 text-white text-center text-xs font-semibold ${
+                    resource.type === 'video'
+                      ? 'bg-red-500'
+                      : resource.type === 'link'
+                        ? 'bg-blue-500'
+                        : resource.type === 'blog'
+                          ? 'bg-green-500'
+                          : 'bg-gray-500'
+                  }`}>
                     {resource.type}
                   </div>
                 )}

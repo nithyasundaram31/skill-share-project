@@ -8,7 +8,7 @@ import { selectCategory, selectDescription, selectLikes, selectTerm, selectTitle
 import categoryServices from '../../services/categoryServices';
 import resourceServices from '../../services/resourceServices';
 import ResourceCard from '../../components/ResourceCard';
-import { SiPandora } from 'react-icons/si';
+
 
 function ResourcePage() {
   const [showToggle, setShowToggle] = useState(false);
@@ -347,9 +347,10 @@ const filteredResources = resources.filter(res => {
           resources={filteredResources}
           onUpdate={handleUpdate}
           onDelete={handleDelete}
-          refreshFlag={refreshFlag}
+        
            
         />
+         
       </div>
     </>
   )
