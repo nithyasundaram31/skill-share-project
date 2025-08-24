@@ -8,7 +8,7 @@ import { MdAccountCircle } from 'react-icons/md';
 import { toast } from 'react-toastify';
 
 function VideoPage() {
-  const { videoId } = useParams(); // it will take the videoId by useParams
+  const { id } = useParams(); // it will take the videoId by useParams
 
   const [video, setVideo] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -21,7 +21,7 @@ function VideoPage() {
   useEffect(() => {
     const fetchVideo = async () => {
       try {
-        const res = await resourceServices.getResourceById(videoId);
+        const res = await resourceServices.getResourceById(id);
         setVideo(res.data);               // Set video data
         setViews(res.data.views);         // Set initial views without incrementing yet
       } catch (err) {
@@ -30,8 +30,8 @@ function VideoPage() {
         setLoading(false);
       }
     };
-    if (videoId) fetchVideo();
-  }, [videoId]);
+    if (id) fetchVideo();
+  }, [id]);
 
 
   // Increment views only once
@@ -39,13 +39,13 @@ function VideoPage() {
   useEffect(() => {
     const incrementViews = async () => {
       try {
-        const res = await resourceServices.incrementViews(videoId);
+        const res = await resourceServices.incrementViews(id);
         setViews(res.data.views);
       } catch (err) {
         console.log("Error incrementing views:", err);
       }
     };
-    if (videoId) incrementViews();
+    if (id) incrementViews();
   }, []); // empty dependency runs only once when component mounts
 
 
@@ -58,7 +58,7 @@ function VideoPage() {
     console.log("current userId is", currentUser)
     try {
       const response = await commentServices.createComment({
-        resource: videoId,   // video id from useParams
+        resource: id,   // video id from useParams
         user: userId,
         text: text
       })
@@ -75,7 +75,7 @@ function VideoPage() {
 
   const fetchComments = async () => {
     try {
-      const response = await commentServices.getComments(videoId)
+      const response = await commentServices.getComments(id)
       console.log("the all fetch comments response is:", response.data)
       setComments(response.data)
     } catch (error) {

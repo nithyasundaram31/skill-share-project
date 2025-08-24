@@ -1,33 +1,50 @@
 import React, { useEffect, useState } from 'react';
-import { FaFileAlt, FaFilePdf, FaLink, FaPlay, FaThumbsUp } from 'react-icons/fa';
+import { FaBookmark, FaFileAlt, FaFilePdf, FaLink, FaPlay, FaRegBookmark, FaThumbsUp } from 'react-icons/fa';
 import resourceServices from '../services/resourceServices';
 import { useNavigate } from 'react-router';
+import bookmarkServices from '../services/bookmarkServices';
+// import bookmarkServices from '../services/bookmarkServices;
 
 function ResourceCard({ resources, onUpdate, onDelete }) {
 
-  // Local user info from localStorage
   const user = JSON.parse(localStorage.getItem("user"));
-  console.log("user received:", user);
-
   const navigate = useNavigate();    // useNavigate hook to redirect to video page
+  const [localResources, setLocalResources] = useState(resources);    
+  const [likedMap, setLikedMap] = useState({}); // Track likes for each resource individually.likedMap structure: { resourceId: { liked: true/false, likesCount: number } }
+  const [bookmarkedMap, setBookmarkedMap] = useState({}); // Track bookmarks for each resource
 
-  // Track likes for each resource individually
-  // likedMap structure: { resourceId: { liked: true/false, likesCount: number } }
-  const [likedMap, setLikedMap] = useState({});
-
-  const [localResources, setLocalResources] = useState(resources);    // Local copy of resources for managing views updates
-
-  // Initialize likedMap and localResources when resources or user.id change
+  // Initialize likedMap, bookmarkedMap and localResources when resources or user.id change
   useEffect(() => {
-    const initMap = {};
+    const initLikeMap = {};
     resources.forEach(res => {
-      initMap[res._id] = {
+      initLikeMap[res._id] = {
         liked: res.likes?.some(u => u.toString() === user.id.toString()),
         likesCount: res.likes?.length || 0,
       };
     });
-    setLikedMap(initMap);
+    setLikedMap(initLikeMap);
     setLocalResources(resources);
+
+    // Fetch user bookmarks from backend
+    const fetchBookmarks = async () => {
+      try {
+        const response = await bookmarkServices.getUserBookmarks(user.id);
+        console.log("Fetched bookmarks:", response.data);
+
+        const userBookmarks = response.data; // array of bookmarks with resource IDs
+        const initBookmarkMap = {};
+
+        userBookmarks.forEach(b => {
+          initBookmarkMap[b.resource._id] = true; // mark as bookmarked
+        });
+
+        setBookmarkedMap(initBookmarkMap);
+      } catch (err) {
+        console.error("Error fetching bookmarks:", err);
+      }
+    };
+
+    fetchBookmarks();
   }, [resources, user.id]);
 
   // Function to handle like button click
@@ -49,7 +66,30 @@ function ResourceCard({ resources, onUpdate, onDelete }) {
     }
   };
 
-  // Component to display time since post
+  //   // Function to handle bookmark toggle
+  const handleBookmark = async (id) => {
+    try {
+      console.log("User ID:", user.id);
+      console.log("Bookmarking resource:", id);
+      
+      const response = await bookmarkServices.toggleBookmark(id, user.id);
+      console.log("Bookmark response:", response.data);
+
+      // Use the reliable isBookmarked flag from backend
+      const newBookmarkStatus = response.data.isBookmarked;
+
+      setBookmarkedMap(prev => ({
+        ...prev,
+        [id]: response.data.isBookmarked,
+      }));
+
+      console.log(`Resource ${id} bookmark status: ${newBookmarkStatus}`);
+    } catch (error) {
+      console.error("Bookmark error:", error);
+      console.log("Error response:", error.response?.data);
+    }
+  };
+
   const PostTime = ({ createdAt }) => {
     const now = new Date();
     const created = new Date(createdAt);
@@ -64,7 +104,7 @@ function ResourceCard({ resources, onUpdate, onDelete }) {
     else return <p className="text-xs text-gray-500">Posted {diffMinutes} minutes ago</p>;
   };
 
-  // Extract YouTube ID from URL
+  // YouTube ID from URL
   const getYouTubeId = (url) => {
     try {
       if (url.includes("/shorts/")) return null;
@@ -76,7 +116,7 @@ function ResourceCard({ resources, onUpdate, onDelete }) {
     }
   };
 
-  // Handle click on resource (video or other types)
+  // Handle click on resource 
   const handleResourceClick = async (resource) => {
     await handleView(resource._id); // Increment view count
 
@@ -100,7 +140,6 @@ function ResourceCard({ resources, onUpdate, onDelete }) {
 
       const response = await resourceServices.incrementViews(id, user.id);
 
-      // Update views in local copy
       setLocalResources(prev =>
         prev.map(r => r._id === id ? { ...r, views: response.data.views } : r)
       );
@@ -179,11 +218,10 @@ function ResourceCard({ resources, onUpdate, onDelete }) {
                 </div>
                 {/* //views */}
                 <div className='mt-2'>
-                  {resource.views>0 &&( 
+                  {resource.views > 0 && ( 
                       <span className="ml-2">{resource.views} </span>
                   )}
                   <span>views</span>
-                
                 </div>
               </div>
 
@@ -197,7 +235,9 @@ function ResourceCard({ resources, onUpdate, onDelete }) {
               </div>
 
               {/* Bottom buttons */}
-              <div className="mt-auto flex items-center justify-between mb-2">
+              <div className="mt-auto flex gap-6 items-center justify-between mb-2">
+                {user.role==='admin'?(
+                   <div className='space-x-28  md:space-x-16' >
                 <button
                   onClick={() => handleUpdateClick(resource._id)}
                   className="bg-blue-500 text-white font-semibold rounded text-sm px-2 py-1"
@@ -210,6 +250,16 @@ function ResourceCard({ resources, onUpdate, onDelete }) {
                 >
                   Delete
                 </button>
+                </div>
+                
+                ) :( <button onClick={() => handleBookmark(resource._id)}>
+                    {bookmarkedMap[resource._id] ? (
+                      <FaBookmark className="text-blue-500 text-xl" />
+                    ) : (
+                      <FaRegBookmark className="text-gray-500 text-xl" />
+                    )}
+                  </button>)}
+              
                 {resource.type && (
                   <div className={`rounded-full px-3 py-1 text-white text-center text-xs font-semibold ${
                     resource.type === 'video'
@@ -233,3 +283,6 @@ function ResourceCard({ resources, onUpdate, onDelete }) {
 }
 
 export default ResourceCard;
+
+
+
