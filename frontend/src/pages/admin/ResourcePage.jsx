@@ -30,7 +30,7 @@ function ResourcePage() {
   const dispatch = useDispatch() //dispatch is update 
   const [refreshFlag, setRefreshFlag] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");  //search
-
+ const user=localStorage.getItem('user')
   // Resource fetch function 
   const fetchAllResource = async () => {
     try {
@@ -214,20 +214,25 @@ const filteredResources = resources.filter(res => {
        <option value="blog">blog</option>
     </select>
   </div>
-  <button onClick={handleButton}
+  {user.role==='admin' &&(<button onClick={handleButton}
     className='  flex gap-2 justify-center text-sm whitespace-nowrap items-center py-3 px-4 rounded font-semibold transform transition active:scale-90 hover:bg-green-600 text-white bg-green-500'>
     <FaPlus className='w-4 h-4'/>create resource
-  </button>
+  </button>)}
+  
 </div>
 
 {/* Mobile/Tablet - stacked */}
+
 <div className='lg:hidden'>
-  <span className='flex justify-end items-end'>
+  {user.role==='admin' &&(
+    <span className='flex justify-end items-end'>
     <button onClick={handleButton}
       className='flex gap-2 mb-2 mr-2 lg:mr-8 justify-center text-sm whitespace-nowrap items-center py-3 px-2 w-[100%] md:w-[25%] lg:w-[15%] rounded font-semibold transform transition active:scale-90 p-4 hover:bg-green-600 text-white bg-green-500 text-base mb-6'>
       <FaPlus className='w-4 h-4'/>create resource
     </button>
   </span>
+  )}
+  
   <div className='flex mb-2 gap-2'>
      <div className="flex  flex-1 items-center border-2 rounded-full px-3 py-2 w-64">
       <input
