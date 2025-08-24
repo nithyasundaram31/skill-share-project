@@ -15,6 +15,7 @@ import ResourcePage from './pages/admin/ResourcePage'
 import ResourceCard from './components/ResourceCard'
 import VideoPage from './pages/admin/VideoPage'
 import Profile from './components/Profile'
+import BookMarkPage from './pages/user/BookMarkPage'
 
 
 function App() {
@@ -45,13 +46,14 @@ function App() {
           <Route path="" element={<UserDashboardPage />} />
            <Route path='profile/:id' element={<Profile/>}/>
             <Route path="resource" element={< ResourcePage  />} />
+               <Route path="bookmark" element={< BookMarkPage  />} />
    
 
                   {/* Public resources */}
           {/* Add more nested admin routes here if needed */}
         </Route>
 
- <Route path="/video/:videoId" element={<VideoPage />} />
+ <Route path="/video/:id" element={<VideoPage />} />
     </Routes>
 
 
