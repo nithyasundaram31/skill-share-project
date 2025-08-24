@@ -28,18 +28,18 @@ role:{
 },
 
   profile:{
-  //  address: {
-  //     type: String,
-  //   },
-  //   dob: {
-  //     type: Date,
-  //   },
-   
     contact:{
       type: Number,
     }
    
   }, // Nesting the profile schema
+
+  // bookmarks: [
+  //   {
+  //     type: mongoose.Schema.Types.ObjectId,
+  //     ref: "Resource",
+  //   },
+  // ],
   
 });
    

@@ -25,7 +25,9 @@ const resourceSchema = new mongoose.Schema({
 
   // Likes by users
 likes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
-dislikes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]
+dislikes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+//  bookmarks: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+  
 
 
 }, { timestamps: true });
