@@ -9,6 +9,7 @@ const resourceRoute = require("./routers/resourceRoute");
 const commentRoute = require("./routers/commentRoute");
 const fileRouter = require("./routers/fileRoutes");
   const path = require('path');
+const bookmarkRoute = require("./routers/bookmarkRoute");
 
 const app = express();
 app.use(cors({
@@ -29,7 +30,7 @@ app.use('/api/auth',userRoute);
   app.use('/api/resource',resourceRoute);
    app.use('/api/comment',commentRoute);
    app.use('/api/file',fileRouter);
- 
+  app.use('/api/bookmark',bookmarkRoute);
 
 // Serve static uploaded files
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));

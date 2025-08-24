@@ -74,7 +74,7 @@ function SideBar({ openMobileMenu, setOpenMobileMenu , handleLogout}) {
               </li>
 
               <li className='flex items-center gap-3'>
-                <FaThList className='text-xl' /> <Link>Bookmarked</Link>
+                <FaThList className='text-xl' /> <Link  to='/user/dashboard/bookmark'>Bookmarked</Link>
               </li>
 
               <li className='flex items-center gap-3'>
