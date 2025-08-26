@@ -9,7 +9,6 @@ import categoryServices from '../../services/categoryServices';
 import resourceServices from '../../services/resourceServices';
 import ResourceCard from '../../components/ResourceCard';
 
-
 function ResourcePage() {
   const [showToggle, setShowToggle] = useState(false);
   const [terms, setTerms] = useState([])
@@ -18,7 +17,6 @@ function ResourcePage() {
   const [editId, setEditId] = useState(null); // tract editid 
   const [resources, setResources] = useState([]); // resources state
   const [filterType, setFilterType] = useState("all"); //initial state all in filtered dropdowns
-  
   const title = useSelector(selectTitle) //useSelector is read the redux store
   const term = useSelector(selectTerm)
   const category = useSelector(selectCategory)
@@ -26,11 +24,9 @@ function ResourcePage() {
   const url = useSelector(selectUrl)
   const description=useSelector(selectDescription)
   const [pdfFile, setPdfFile] = useState(null);
-  const likes = useSelector(selectLikes)
   const dispatch = useDispatch() //dispatch is update 
-  const [refreshFlag, setRefreshFlag] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");  //search
- const user=localStorage.getItem('user')
+ const user=JSON.parse(localStorage.getItem('user'))
   // Resource fetch function 
   const fetchAllResource = async () => {
     try {
@@ -87,7 +83,6 @@ console.log("resource response is:",response.data)
         toast.success("Resource created successfully");
       }
       
-      setRefreshFlag(prev => !prev);
       fetchAllResource(); // refresh resources after create/update
 
       // Reset form state
@@ -176,7 +171,7 @@ console.log("resource response is:",response.data)
   }, [])
 
   if (loading) {
-    return <div className='text-center p-4' ><FaSpinner className="animate-spin text-gray-500" size={40} /></div>
+    return <div className='flex justify-center items-center  p-4' ><FaSpinner className="animate-spin text-gray-500" size={40} /></div>
   }
 //Filtered list based on dropdown value
 

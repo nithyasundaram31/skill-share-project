@@ -3,15 +3,15 @@ import { FaBookmark, FaFileAlt, FaFilePdf, FaLink, FaPlay, FaRegBookmark, FaThum
 import resourceServices from '../services/resourceServices';
 import { useNavigate } from 'react-router';
 import bookmarkServices from '../services/bookmarkServices';
-// import bookmarkServices from '../services/bookmarkServices;
 
-function ResourceCard({ resources, onUpdate, onDelete }) {
+function ResourceCard({ pageType, resources, onUpdate, onDelete }) {
 
   const user = JSON.parse(localStorage.getItem("user"));
   const navigate = useNavigate();    // useNavigate hook to redirect to video page
   const [localResources, setLocalResources] = useState(resources);    
   const [likedMap, setLikedMap] = useState({}); // Track likes for each resource individually.likedMap structure: { resourceId: { liked: true/false, likesCount: number } }
   const [bookmarkedMap, setBookmarkedMap] = useState({}); // Track bookmarks for each resource
+  const [currentPage,setCurrentPage]=useState(1) //all the pages start from 1 
 
   // Initialize likedMap, bookmarkedMap and localResources when resources or user.id change
   useEffect(() => {
@@ -31,7 +31,7 @@ function ResourceCard({ resources, onUpdate, onDelete }) {
         const response = await bookmarkServices.getUserBookmarks(user.id);
         console.log("Fetched bookmarks:", response.data);
 
-        const userBookmarks = response.data; // array of bookmarks with resource IDs
+        const userBookmarks = response.data;
         const initBookmarkMap = {};
 
         userBookmarks.forEach(b => {
@@ -45,7 +45,7 @@ function ResourceCard({ resources, onUpdate, onDelete }) {
     };
 
     fetchBookmarks();
-  }, [resources, user.id]);
+  }, [resources, user.id]); //here i gave a resources bookmarkPage whenever run the filterResource then it fetchbookmark will render
 
   // Function to handle like button click
   const likeButton = async (id) => {
@@ -89,6 +89,11 @@ function ResourceCard({ resources, onUpdate, onDelete }) {
       console.log("Error response:", error.response?.data);
     }
   };
+
+
+  if( onUpdate){
+     onUpdate()   //after remove bookmark it refresh
+  }
 
   const PostTime = ({ createdAt }) => {
     const now = new Date();
@@ -148,9 +153,30 @@ function ResourceCard({ resources, onUpdate, onDelete }) {
     }
   };
 
+  //pagination
+  const  itemsPerPage = 12;
+  const startIndex = (currentPage - 1) * itemsPerPage; //0
+  const endIndex = startIndex + itemsPerPage;     //0+12=12
+  const currentItems = localResources.slice(startIndex, endIndex); //(0,12) it will slice to 0 to untill  11
+const totalPages = Math.ceil(resources.length / itemsPerPage);
+
+const  prevButton=()=>{
+ if (currentPage > 1) {
+    setCurrentPage(currentPage - 1);
+  }
+
+}
+
+const  nextButton=()=>{
+if (currentPage < totalPages) {
+    setCurrentPage(currentPage + 1);
+  }
+
+}
   return (
+     <>
     <div className="w-full h-full max-w-[1100px] lg:ml-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {localResources.map((resource) => {
+      {currentItems.map((resource) => {
         const videoId = getYouTubeId(resource.url);
         const thumbnailUrl = videoId ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg` : null;
 
@@ -203,9 +229,13 @@ function ResourceCard({ resources, onUpdate, onDelete }) {
                 {resource.category?.name}
               </div>
 
-              <div className='flex justify-between items-center'>
+              <div className='flex justify-between  space-y-2  items-center'>
                 <div>
-                  {resource.createdAt && <PostTime createdAt={resource.createdAt} />}
+                  <div className='mb-2'>
+                      {resource.createdAt && <PostTime  createdAt={resource.createdAt} />} 
+                  </div>
+                
+
                   <button onClick={() => likeButton(resource._id)}>
                     <FaThumbsUp
                       className={likedMap[resource._id]?.liked ? "text-blue-500" : "text-gray-500"}
@@ -253,7 +283,7 @@ function ResourceCard({ resources, onUpdate, onDelete }) {
                 </div>
                 
                 ) :( <button onClick={() => handleBookmark(resource._id)}>
-                    {bookmarkedMap[resource._id] ? (
+                    {bookmarkedMap[resource._id] ? (   
                       <FaBookmark className="text-blue-500 text-xl" />
                     ) : (
                       <FaRegBookmark className="text-gray-500 text-xl" />
@@ -278,7 +308,32 @@ function ResourceCard({ resources, onUpdate, onDelete }) {
           </div>
         );
       })}
+
+      
     </div>
+
+    {currentItems.length===0 ? (
+       pageType === "bookmark" && (
+    <div className='text-center  mt-6 font-semibold text-base '>Bookmarked not found</div>
+  ) 
+        
+     
+   
+    ):(
+    
+         <div className='flex justify-center gap-4 items-center mt-6 '>
+      
+      <button onClick={prevButton} className='px-4 py-2 font-semibold bg-gray-100 border rounded  transition transform hover:bg-gray-200 active:scale-90'>Prev</button>
+       <span>Page {currentPage} of {totalPages}</span>
+       <button  onClick={nextButton} className='px-4 py-2 font-semibold  bg-gray-100 border transition transform hover:bg-gray-200 active:scale-90'>Next</button>
+    </div>
+      
+
+     
+    )}
+    
+    
+   </>
   );
 }
 

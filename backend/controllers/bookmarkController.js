@@ -1,8 +1,5 @@
 const Bookmark = require("../models/Bookmark");
 
-
-
-// Toggle Bookmark Controller
 exports.toggleBookmark = async (req, res) => {
   try {
     const { id: resourceId } = req.params; // resource id
@@ -12,16 +9,16 @@ exports.toggleBookmark = async (req, res) => {
     const existingBookmark = await Bookmark.findOne({ user: userId, resource: resourceId });
 
     if (existingBookmark) {
-      // If already bookmarked → remove it
+      // If already bookmarked  remove it
       await existingBookmark.deleteOne();
       return res.json({
         success: true,
-        message: "Bookmark removed",
+        message: "Bookmark removed",   
         isBookmarked: false,
       });
     }
 
-    // If not bookmarked → create new one
+    // If not bookmarked create new one
     const newBookmark = new Bookmark({ user: userId, resource: resourceId });
     await newBookmark.save();
 
@@ -50,8 +47,12 @@ exports.getUserBookmarks = async (req, res) => {
     const { userId } = req.params;
 
     const bookmarks = await Bookmark.find({ user: userId })
-      .populate("resource", "title")  // show resource title
-      .populate("user", "name");      // show username
+      // .populate("resource") 
+       .populate({
+    path: "resource",
+    populate: [{ path: "term", select: "name" }, { path: "category", select: "name" }]
+  })
+      .populate("user", "name");      
 
     res.json(bookmarks);
   } catch (error) {
@@ -59,3 +60,19 @@ exports.getUserBookmarks = async (req, res) => {
     res.status(500).json({ message: "Internal server error", error: error.message });
   }
 };
+
+
+// exports.getUserBookmarksById = async (req, res) => {
+//   try {
+//     const { userId } = req.params;
+
+//     const bookmarks = await Bookmark.findById({ user: userId })
+//       .populate("resource", "title") 
+//       .populate("user", "name");      
+
+//     res.json(bookmarks);
+//   } catch (error) {
+//     console.error("Get bookmarksById error:", error);
+//     res.status(500).json({ message: "Internal server error", error: error.message });
+//   }
+// };
