@@ -4,7 +4,7 @@ const baseURL = (import.meta.env.VITE_API_URL || 'http://127.0.0.1:5001') + '/ap
 
 const instance = axios.create({
     baseURL,
-    timeout: 10000,
+    timeout: 30000,
     headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
