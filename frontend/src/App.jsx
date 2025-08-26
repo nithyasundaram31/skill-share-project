@@ -44,9 +44,9 @@ function App() {
          
           <Route path="/user/dashboard" element={< UserDashboard/>}>
           <Route path="" element={<UserDashboardPage />} />
-           <Route path='profile/:id' element={<Profile/>}/>
-            <Route path="resource" element={< ResourcePage  />} />
-               <Route path="bookmark" element={< BookMarkPage  />} />
+          <Route path='profile/:id' element={<Profile/>}/>
+          <Route path="resource" element={< ResourcePage  />} />
+          <Route path="bookmark/:id" element={< BookMarkPage  />} />
    
 
                   {/* Public resources */}
