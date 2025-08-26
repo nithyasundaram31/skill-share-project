@@ -72,18 +72,18 @@ function AdminDashboardPage() {
       
 
   <div className='mb-4 w-full  grid  grid-cols-1 md:grid-cols-3 gap-6'>
-    <div className='bg-amber-500 text-center  text-black text-xl p-4 rounded-lg'>
+    <div className='bg-amber-500 text-center font-semibold  text-black text-xl p-4 rounded-lg'>
       <h1 className=' '>
        Resources: {resources.length}</h1>
     </div>
-    <div className='bg-blue-500 text-black text-center text-xl  p-4 rounded-lg'>
+    <div className='bg-blue-500 text-black font-semibold   text-center text-xl  p-4 rounded-lg'>
        <h1  >Users: {users.filter(user=>user.role==="user").length}</h1>
         
         
     
      
     </div>
-    <div className='bg-green-500 text-black text-center text-xl  p-4 rounded-lg'>
+    <div className='bg-green-500  font-semibold text-black text-center text-xl  p-4 rounded-lg'>
       <h1> Terms: {terms?.length} </h1>
     </div>
   </div>
