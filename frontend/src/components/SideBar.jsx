@@ -24,11 +24,17 @@ function SideBar({ openMobileMenu, setOpenMobileMenu , handleLogout}) {
     <>
       {/* // mobile devices small screen sidebar will close. md screen will show when we block */}
 
-      <div
+      {/* <div
         className={`fixed  top-0 left-0 z-50 bg-white shadow-md h-full p-6
-      ${openMobileMenu ? "block" : "hidden"} md:block w-[40%] md:w-[22%] lg:w-[13%]`}
+      ${openMobileMenu ? "block" : "hidden"} md:block w-[40%] md:w-[15%] `}
 
-      >
+      > */} 
+
+      <div
+  className={`fixed top-0 left-0 z-50 bg-white shadow-md h-full p-6
+  ${openMobileMenu ? "block" : "hidden"} md:block 
+  w-[50%] sm:w-[50%] md:w-[20%] lg:w-[16%] xl:w-[15%]`}
+>
 
         <FaTimes onClick={closeButton} className='md:hidden ' />
         <div className='flex justify-center items-center'>

@@ -35,7 +35,7 @@ setOpenMobileMenu(!openMobileMenu)
         <>
             <div className=' fixed z-[10] w-full '>
 
-                <div className=' w-full  h-16 bg-white  shadow-md p-4 pr-8 '>
+                <div className=' w-full  h-16 bg-white  shadow p-4 pr-8 '>
                     <div className='flex  flex  justify-between   gap-1'>
                         <div className=' '>
 
