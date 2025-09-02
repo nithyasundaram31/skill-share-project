@@ -181,6 +181,14 @@ const filteredResources = resources.filter(res => {
   return matchesType && matchesSearch;
 });
 
+// update only views count
+const handleViewsUpdate = (id, newViews) => {
+  setResources((prev) =>
+    prev.map((res) =>
+      res._id === id ? { ...res, views: newViews } : res
+    )
+  );
+};
 
 
   return (
@@ -347,6 +355,7 @@ const filteredResources = resources.filter(res => {
           resources={filteredResources}
           onUpdate={handleUpdate}
           onDelete={handleDelete}
+            onViewsUpdate={handleViewsUpdate}
         
            
         />

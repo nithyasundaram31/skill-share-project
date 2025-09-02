@@ -3,17 +3,17 @@ import { FaBookmark, FaFileAlt, FaFilePdf, FaLink, FaPlay, FaRegBookmark, FaThum
 import resourceServices from '../services/resourceServices';
 import { useNavigate } from 'react-router';
 import bookmarkServices from '../services/bookmarkServices';
+import UserDashboardPage from '../pages/user/UserDashboardPage';
 
-function ResourceCard({ pageType, resources, onUpdate, onDelete }) {
-
+function ResourceCard({ pageType, onViewsUpdate, resources, onUpdate, onDelete }) {
   const user = JSON.parse(localStorage.getItem("user"));
   const navigate = useNavigate();    // useNavigate hook to redirect to video page
-  const [localResources, setLocalResources] = useState(resources);    
-  const [likedMap, setLikedMap] = useState({}); // Track likes for each resource individually.likedMap structure: { resourceId: { liked: true/false, likesCount: number } }
+  
+  const [likedMap, setLikedMap] = useState({}); // Track likes for each resource individually
   const [bookmarkedMap, setBookmarkedMap] = useState({}); // Track bookmarks for each resource
-  const [currentPage,setCurrentPage]=useState(1) //all the pages start from 1 
+  const [currentPage, setCurrentPage] = useState(1) //all the pages start from 1 
 
-  // Initialize likedMap, bookmarkedMap and localResources when resources or user.id change
+  // Initialize likedMap and bookmarkedMap when resources or user.id change
   useEffect(() => {
     const initLikeMap = {};
     resources.forEach(res => {
@@ -23,7 +23,6 @@ function ResourceCard({ pageType, resources, onUpdate, onDelete }) {
       };
     });
     setLikedMap(initLikeMap);
-    setLocalResources(resources);
 
     // Fetch user bookmarks from backend
     const fetchBookmarks = async () => {
@@ -39,13 +38,14 @@ function ResourceCard({ pageType, resources, onUpdate, onDelete }) {
         });
 
         setBookmarkedMap(initBookmarkMap);
+      
       } catch (err) {
         console.error("Error fetching bookmarks:", err);
       }
     };
 
     fetchBookmarks();
-  }, [resources, user.id]); //here i gave a resources bookmarkPage whenever run the filterResource then it fetchbookmark will render
+  }, [resources, user.id]);
 
   // Function to handle like button click
   const likeButton = async (id) => {
@@ -66,7 +66,7 @@ function ResourceCard({ pageType, resources, onUpdate, onDelete }) {
     }
   };
 
-  //   // Function to handle bookmark toggle
+  // Function to handle bookmark toggle
   const handleBookmark = async (id) => {
     try {
       console.log("User ID:", user.id);
@@ -90,11 +90,12 @@ function ResourceCard({ pageType, resources, onUpdate, onDelete }) {
     }
   };
 
-
-  if( onUpdate){
+   if( onUpdate){
      onUpdate()   //after remove bookmark it refresh
   }
 
+
+  // PostTime function
   const PostTime = ({ createdAt }) => {
     const now = new Date();
     const created = new Date(createdAt);
@@ -138,206 +139,189 @@ function ResourceCard({ pageType, resources, onUpdate, onDelete }) {
   // Call parent update function
   const handleUpdateClick = (id) => onUpdate(id);
 
-  // Increment views count and update localResources state
+  // Increment views count and update state
   const handleView = async (id) => {
     try {
       if (!user || !user.id) return;
-
       const response = await resourceServices.incrementViews(id, user.id);
-
-      setLocalResources(prev =>
-        prev.map(r => r._id === id ? { ...r, views: response.data.views } : r)
-      );
+      console.log("view response:", response.data);
+        // Tell parent to update state
+    if (onViewsUpdate) {
+      onViewsUpdate(id, response.data.views);  //resource id  and for that views 
+    }
     } catch (error) {
       console.log("Error incrementing views:", error);
     }
   };
 
   //pagination
-  const  itemsPerPage = 12;
+  const itemsPerPage = 12;
   const startIndex = (currentPage - 1) * itemsPerPage; //0
   const endIndex = startIndex + itemsPerPage;     //0+12=12
-  const currentItems = localResources.slice(startIndex, endIndex); //(0,12) it will slice to 0 to untill  11
-const totalPages = Math.ceil(resources.length / itemsPerPage);
+  const currentItems = resources.slice(startIndex, endIndex); //(0,12) it will slice to 0 to untill 11
+  const totalPages = Math.ceil(resources.length / itemsPerPage);
 
-const  prevButton=()=>{
- if (currentPage > 1) {
-    setCurrentPage(currentPage - 1);
-  }
+  const prevButton = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
 
-}
+  const nextButton = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
 
-const  nextButton=()=>{
-if (currentPage < totalPages) {
-    setCurrentPage(currentPage + 1);
-  }
-
-}
   return (
-     <>
-    <div className="w-full h-full max-w-[1100px] lg:ml-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {currentItems.map((resource) => {
-        const videoId = getYouTubeId(resource.url);
-        const thumbnailUrl = videoId ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg` : null;
+    <>
+      <div className="w-full h-full max-w-[1100px] md:ml-16  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {currentItems.map((resource) => {
+          const videoId = getYouTubeId(resource.url);
+          const thumbnailUrl = videoId ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg` : null;
 
-        return (
-          <div
-            key={resource._id}
-            className="bg-white rounded-lg shadow-lg text-black cursor-pointer overflow-hidden flex flex-col"
-          >
-            {/* Preview area */}
-            <div className="h-44 w-full flex items-center justify-center bg-gray-200 overflow-hidden">
-              {resource.type === 'video' && thumbnailUrl && (
-                <div onClick={() => handleResourceClick(resource)} className="relative w-full h-full transform transition-all duration-200 hover:scale-105 hover:shadow-xl">
-                  <img src={thumbnailUrl} alt={resource.title} className="w-full h-full object-cover" />
-                  <div className="absolute inset-0 bg-black bg-opacity-10 flex items-center justify-center">
-                    <div className="w-16 h-16 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
-                      <FaPlay className="text-white text-xl ml-1" />
+          return (
+            <div
+              key={resource._id}
+              className="bg-white rounded-lg shadow-lg text-black cursor-pointer overflow-hidden flex flex-col"
+            >
+              {/* Preview area */}
+              <div className="h-44 w-full flex items-center justify-center bg-gray-200 overflow-hidden">
+                {resource.type === 'video' && thumbnailUrl && (
+                  <div onClick={() => handleResourceClick(resource)} className="relative w-full h-full transform transition-all duration-200 hover:scale-105 hover:shadow-xl">
+                    <img src={thumbnailUrl} alt={resource.title} className="w-full h-full object-cover" />
+                    <div className="absolute inset-0 bg-black bg-opacity-10 flex items-center justify-center">
+                      <div className="w-16 h-16 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+                        <FaPlay className="text-white text-xl ml-1" />
+                      </div>
                     </div>
                   </div>
-                </div>
-              )}
-              {resource.type === 'pdf' && (
-                <div className="w-20 h-20 bg-red-500 bg-opacity-20 rounded-full flex items-center justify-center">
-                  <FaFilePdf size={40} className="text-red-600" />
-                </div>
-              )}
-              {resource.type === 'blog' && (
-                <div className="w-20 h-20 bg-green-500 bg-opacity-20 rounded-full flex items-center justify-center">
-                  <FaFileAlt size={40} className="text-green-600" />
-                </div>
-              )}
-              {resource.type === 'link' && (
-                <div className="w-20 h-20 bg-blue-500 bg-opacity-20 rounded-full flex items-center justify-center">
-                  <FaLink size={35} className="text-blue-600" />
-                </div>
-              )}
-            </div>
-
-            {/* Text content */}
-            <div className="p-4 flex flex-col flex-1">
-              <h1 className="font-semibold text-gray-800 mb-2">
-                <span className="text-black font-bold">Title: </span>
-                {resource.title}
-              </h1>
-              <p className="font-semi text-gray-800 mb-2">
-                <span className="text-black font-bold">Term: </span>
-                {resource.term?.name}
-              </p>
-              <div className="font-semibold text-gray-800 mb-4">
-                <span className="text-black font-bold">Category: </span>
-                {resource.category?.name}
-              </div>
-
-              <div className='flex justify-between  space-y-2  items-center'>
-                <div>
-                  <div className='mb-2'>
-                      {resource.createdAt && <PostTime  createdAt={resource.createdAt} />} 
+                )}
+                {resource.type === 'pdf' && (
+                  <div className="w-20 h-20 bg-red-500 bg-opacity-20 rounded-full flex items-center justify-center">
+                    <FaFilePdf size={40} className="text-red-600" />
                   </div>
-                
-
-                  <button onClick={() => likeButton(resource._id)}>
-                    <FaThumbsUp
-                      className={likedMap[resource._id]?.liked ? "text-blue-500" : "text-gray-500"}
-                      size={20}
-                    />
-                  </button>
-                  {likedMap[resource._id]?.likesCount > 0 && (
-                    <span className="ml-2 text-sm text-gray-700">{likedMap[resource._id]?.likesCount}</span>
-                  )}
-                </div>
-                {/* //views */}
-                <div className='mt-2'>
-                  {resource.views > 0 && ( 
-                      <span className="ml-2">{resource.views} </span>
-                  )}
-                  <span>views</span>
-                </div>
-              </div>
-
-              <div className='mb-4'>
-                <button
-                  onClick={() => handleResourceClick(resource)}
-                  className="mt-2  w-full bg-blue-500 text-white px-3 py-1 rounded "
-                >
-                  Open {resource.type}
-                </button>
-              </div>
-
-              {/* Bottom buttons */}
-              <div className="mt-auto flex gap-6 items-center justify-between mb-2">
-                {user.role==='admin'?(
-                   <div className='space-x-28  md:space-x-16' >
-                <button
-                  onClick={() => handleUpdateClick(resource._id)}
-                  className="bg-blue-500 text-white font-semibold rounded text-sm px-2 py-1"
-                >
-                  Update
-                </button>
-                <button
-                  onClick={() => handleDeleteClick(resource._id)}
-                  className="bg-red-600 text-white font-semibold rounded text-sm px-2 py-1"
-                >
-                  Delete
-                </button>
-                </div>
-                
-                ) :( <button onClick={() => handleBookmark(resource._id)}>
-                    {bookmarkedMap[resource._id] ? (   
-                      <FaBookmark className="text-blue-500 text-xl" />
-                    ) : (
-                      <FaRegBookmark className="text-gray-500 text-xl" />
-                    )}
-                  </button>)}
-              
-                {resource.type && (
-                  <div className={`rounded-full px-3 py-1 text-white text-center text-xs font-semibold ${
-                    resource.type === 'video'
-                      ? 'bg-red-500'
-                      : resource.type === 'link'
-                        ? 'bg-blue-500'
-                        : resource.type === 'blog'
-                          ? 'bg-green-500'
-                          : 'bg-gray-500'
-                  }`}>
-                    {resource.type}
+                )}
+                {resource.type === 'blog' && (
+                  <div className="w-20 h-20 bg-green-500 bg-opacity-20 rounded-full flex items-center justify-center">
+                    <FaFileAlt size={40} className="text-green-600" />
+                  </div>
+                )}
+                {resource.type === 'link' && (
+                  <div className="w-20 h-20 bg-blue-500 bg-opacity-20 rounded-full flex items-center justify-center">
+                    <FaLink size={35} className="text-blue-600" />
                   </div>
                 )}
               </div>
+
+              {/* Text content */}
+              <div className="p-4 flex flex-col flex-1">
+                <h1 className="font-semibold text-gray-800 mb-2">
+                  <span className="text-black font-bold">Title: </span>
+                  {resource.title}
+                </h1>
+                <p className="font-semi text-gray-800 mb-2">
+                  <span className="text-black font-bold">Term: </span>
+                  {resource.term?.name}
+                </p>
+                <div className="font-semibold text-gray-800 mb-4">
+                  <span className="text-black font-bold">Category: </span>
+                  {resource.category?.name}
+                </div>
+
+                <div className='flex justify-between  space-y-2  items-center'>
+                  <div>
+                    <div className='mb-2'>
+                      {resource.createdAt && <PostTime createdAt={resource.createdAt} />} 
+                    </div>
+
+                    <button onClick={() => likeButton(resource._id)}>
+                      <FaThumbsUp
+                        className={likedMap[resource._id]?.liked ? "text-blue-500" : "text-gray-500"}
+                        size={20}
+                      />
+                    </button>
+                    {likedMap[resource._id]?.likesCount > 0 && (
+                      <span className="ml-2 text-sm text-gray-700">{likedMap[resource._id]?.likesCount}</span>
+                    )}
+                  </div>
+                  {/* //views */}
+                  <div className='mt-2'>
+                    {resource.views > 0 && ( 
+                      <span className="ml-2">{resource.views} </span>
+                    )}
+                    <span>views</span>
+                  </div>
+                </div>
+
+                <div className='mb-4'>
+                  <button
+                    onClick={() => handleResourceClick(resource)}
+                    className="mt-2  w-full bg-blue-500 text-white px-3 py-1 rounded "
+                  >
+                    Open {resource.type}
+                  </button>
+                </div>
+
+                {/* Bottom buttons */}
+                <div className="mt-auto flex gap-6 items-center justify-between mb-2">
+                  {user.role==='admin'?(
+                    <div className='space-x-28  md:space-x-16' >
+                      <button
+                        onClick={() => handleUpdateClick(resource._id)}
+                        className="bg-blue-500 text-white font-semibold rounded text-sm px-2 py-1"
+                      >
+                        Update
+                      </button>
+                      <button
+                        onClick={() => handleDeleteClick(resource._id)}
+                        className="bg-red-600 text-white font-semibold rounded text-sm px-2 py-1"
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  ) :( <button onClick={() => handleBookmark(resource._id)}>
+                      {bookmarkedMap[resource._id] ? (   
+                        <FaBookmark className="text-blue-500 text-xl" />
+                      ) : (
+                        <FaRegBookmark className="text-gray-500 text-xl" />
+                      )}
+                    </button>)}
+                
+                  {resource.type && (
+                    <div className={`rounded-full px-3 py-1 text-white text-center text-xs font-semibold ${
+                      resource.type === 'video'
+                        ? 'bg-red-500'
+                        : resource.type === 'link'
+                          ? 'bg-blue-500'
+                          : resource.type === 'blog'
+                            ? 'bg-green-500'
+                            : 'bg-gray-500'
+                    }`}>
+                      {resource.type}
+                    </div>
+                  )}
+                </div>
+              </div>
             </div>
-          </div>
-        );
-      })}
+          );
+        })}
+      </div>
 
-      
-    </div>
-
-    {currentItems.length===0 ? (
-       pageType === "bookmark" && (
-    <div className='text-center  mt-6 font-semibold text-base '>Bookmarked not found</div>
-  ) 
-        
+      {currentItems.length === 0 ? (
+        pageType === "bookmark" && (
+          <div className='text-center  mt-6 font-semibold text-base '>Bookmarked not found</div>
+        )
+      ) : (
+        <div className='flex justify-center gap-4 items-center mt-6 '>
+          <button onClick={prevButton} className='px-4 py-2 font-semibold bg-gray-100 border rounded  transition transform hover:bg-gray-200 active:scale-90'>Prev</button>
+          <span>Page {currentPage} of {totalPages}</span>
+          <button onClick={nextButton} className='px-4 py-2 font-semibold  bg-gray-100 border transition transform hover:bg-gray-200 active:scale-90'>Next</button>
+        </div>
+      )}
      
-   
-    ):(
-    
-         <div className='flex justify-center gap-4 items-center mt-6 '>
-      
-      <button onClick={prevButton} className='px-4 py-2 font-semibold bg-gray-100 border rounded  transition transform hover:bg-gray-200 active:scale-90'>Prev</button>
-       <span>Page {currentPage} of {totalPages}</span>
-       <button  onClick={nextButton} className='px-4 py-2 font-semibold  bg-gray-100 border transition transform hover:bg-gray-200 active:scale-90'>Next</button>
-    </div>
-      
-
-     
-    )}
-    
-    
-   </>
+    </>
   );
 }
 
 export default ResourceCard;
-
-
-
