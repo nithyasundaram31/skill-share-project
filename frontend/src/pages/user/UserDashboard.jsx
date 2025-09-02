@@ -10,9 +10,9 @@ function UserDashboard() {
        <SideBar />
        <div className="flex-1">
          <NavBar />
-         <div className="p-4  mt-14   lg:ml-36">
-           <Outlet /> {/* Nested routes */}
-         </div>
+         <div className="p-4 mt-14  lg:ml-[11%] ">
+  <Outlet />
+</div>
        </div>
      </div>
    );
