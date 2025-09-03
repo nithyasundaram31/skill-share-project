@@ -62,7 +62,10 @@ fetchAllTerms();
 
 
   if(loading){
-   return <div className="text-center text-xl p-6 "> <FaSpinner className="animate-spin text-gray-500" size={40}/> </div>
+   return <div className="flex justify-center items-center  text-xl p-6 "> 
+   <div> <FaSpinner className="animate-spin text-gray-500" size={40}/></div>
+   
+   </div>
   }
 
    

@@ -74,17 +74,20 @@ function AdminDashboardPage() {
   <div className='mb-4 w-full  grid  grid-cols-1 md:grid-cols-3 gap-6'>
     <div className='bg-amber-500 text-center font-semibold  text-black text-xl p-4 rounded-lg'>
       <h1 className=' '>
-       Resources: {resources.length}</h1>
+       Resources </h1>
+       <h1 className='text-2xl'>{resources.length}</h1>
     </div>
     <div className='bg-blue-500 text-black font-semibold   text-center text-xl  p-4 rounded-lg'>
-       <h1  >Users: {users.filter(user=>user.role==="user").length}</h1>
+       <h1  >Users</h1>
+        <h1 className='text-2xl'>{users.filter(user=>user.role==="user").length}</h1> 
         
         
     
      
     </div>
     <div className='bg-green-500  font-semibold text-black text-center text-xl  p-4 rounded-lg'>
-      <h1> Terms: {terms?.length} </h1>
+      <h1> Terms  </h1>
+      <h1 className='text-2xl'>{terms?.length}</h1>
     </div>
   </div>
 <h2 className="text-xl font-semibold mb-6">Recent Activity Chart</h2>
@@ -126,12 +129,12 @@ function AdminDashboardPage() {
   <tbody>
     {resources.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0,5).map((resource,index)=>(
       <tr key={resource._id}>
-      <td className='border p-4 text-center'>{index+1}</td>
-      <td className='border p-4'>{resource?.title}</td>
-      <td className='border p-4'>{resource?.type}</td>
-      <td className='border p-4 text-center '>{resource?.likes.length}</td>
-      <td className='border p-4 text-center'>{resource?.viewers?.length}</td>
-       <td className='border p-4 text-center'>{new Date(resource?.createdAt).toLocaleDateString()}</td>
+      <td className='border p-4 text-center  text-gray-700 font-semibold'>{index+1}</td>
+      <td className='border p-4 font-semibold text-gray-700'>{resource?.title}</td>
+      <td className='border p-4 font-semibold text-gray-700'>{resource?.type}</td>
+      <td className='border p-4 text-center font-semibold text-gray-700'>{resource?.likes.length}</td>
+      <td className='border p-4 text-center font-semibold text-gray-700'>{resource?.viewers?.length}</td>
+       <td className='border p-4 text-center font-semibold  text-gray-700 '>{new Date(resource?.createdAt).toLocaleDateString()}</td>
     </tr>
     ))}
     
