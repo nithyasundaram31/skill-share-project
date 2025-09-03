@@ -32,7 +32,7 @@ exports.registerUser = async (req, res) => {
 
         await user.save();
 
-        res.status(201).json({ user: { name, email, role: user.role }, message: "User successfully registered" });
+        res.status(201).json({ user: { name, email, role: user.role }, message: " Registration successful  " });
 
     } catch (error) {
         console.log(error);
@@ -73,7 +73,7 @@ exports.loginUser = async (req, res) => {
                 id: user._id,
 
             },
-            message: "User successfully login"
+            message: " Login successful"
         });
 
     } catch (err) {
