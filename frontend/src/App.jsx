@@ -29,7 +29,7 @@ function App() {
       <Route path="/register" element={<RegisterPage />} />
  <Route path="/login" element={<LoginPage />} />
      
-      <Route path="/admin/dashboard" element={< AdminDashboard/>}> //absolute path
+      <Route path="/admin/dashboard" element={< AdminDashboard/>}> 
           <Route path="" element={<AdminDashboardPage />} />
           <Route path="terms" element={<TermPage />} />
           <Route path="category" element={< CategoryPage/>} />
@@ -47,6 +47,7 @@ function App() {
           <Route path='profile/:id' element={<Profile/>}/>
           <Route path="resource" element={< ResourcePage  />} />
           <Route path="bookmark/:id" element={< BookMarkPage  />} />
+            {/* <Route path="profile/:id" element={<  Profile />} /> */}
    
 
                   {/* Public resources */}

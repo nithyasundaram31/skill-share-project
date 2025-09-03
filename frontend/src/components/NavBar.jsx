@@ -9,28 +9,28 @@ import { toast } from 'react-toastify'
 
 
 function NavBar() {
-    const navigate=useNavigate()
+    const navigate = useNavigate()
     //store logged in user data in localstorage and get the data here
     const storeUser = JSON.parse(localStorage.getItem("user"))
     console.log(storeUser)
 
     const [openDropdown, setOpenDropdown] = useState(false)
-const [openMobileMenu, setOpenMobileMenu] = useState(false)
+    const [openMobileMenu, setOpenMobileMenu] = useState(false)
     const toggleDropdown = () => {
         setOpenDropdown(!openDropdown)  // To toggle (open/close on click): (!openDropdown)
     }
 
 
-    const toggleMobileMenu=()=>{
-setOpenMobileMenu(!openMobileMenu)
+    const toggleMobileMenu = () => {
+        setOpenMobileMenu(!openMobileMenu)
     }
-//logout
-      const handleLogout=()=>{
-     localStorage.removeItem("user");
-     navigate("/login")
-     toast.success("logout Successfull")
-    
-      }
+    //logout
+    const handleLogout = () => {
+        localStorage.removeItem("user");
+        navigate("/login")
+        toast.success("logout Successful")
+
+    }
     return (
         <>
             <div className=' fixed z-[10] w-full '>
@@ -41,7 +41,7 @@ setOpenMobileMenu(!openMobileMenu)
 
                             <FaBars
                                 className="text-2xl cursor-pointer md:hidden "
-                              onClick={toggleMobileMenu}
+                                onClick={toggleMobileMenu}
                             />
                         </div>
                         <div className=' flex justify-center items-center gap-2 md:gap-0'>
@@ -52,7 +52,10 @@ setOpenMobileMenu(!openMobileMenu)
                             < FaChevronDown className='' onClick={toggleDropdown} />
                             {openDropdown && (
                                 <div className=' bg-white shadow  p-4 md:w-[10%]  w-[20%] absolute z-20 top-14 right-6  flex flex-col justify-center'>
-                                    <Link to={`/admin/dashboard/profile/${storeUser.id}`} className='mb-2 font-semibold hover:text-blue-600 cursor-pointer'> Profile</Link>
+                                    {storeUser.role==='admin'?(  
+                                    <Link to={`/admin/dashboard/profile/${storeUser.id}`} className='mb-2 font-semibold hover:text-blue-600 cursor-pointer'> Profile</Link>)
+                                    :(<Link to={`/user/dashboard/profile/${storeUser.id}`} className='mb-2 font-semibold hover:text-blue-600 cursor-pointer'> Profile</Link>)}
+                                    
                                     <hr className='mb-2  font-semibold ' />
                                     <button onClick={handleLogout} className='text-left font-semibold hover:text-blue-600 cursor-pointer'>Logout</button>
                                 </div>
@@ -65,10 +68,10 @@ setOpenMobileMenu(!openMobileMenu)
 
                 </div>
             </div>
-               <SideBar openMobileMenu={openMobileMenu} setOpenMobileMenu={setOpenMobileMenu} handleLogout={handleLogout}/>
-        </>
-     
-    )
-}
+            <SideBar openMobileMenu={openMobileMenu} setOpenMobileMenu={setOpenMobileMenu} handleLogout={handleLogout} />
+          </>
+          
+    )  
+}   
 
 export default NavBar

@@ -35,23 +35,23 @@ function SideBar({ openMobileMenu, setOpenMobileMenu , handleLogout}) {
   ${openMobileMenu ? "block" : "hidden"} md:block 
   w-[50%] sm:w-[50%] md:w-[20%] lg:w-[16%] xl:w-[15%]`}
 >
-
-        <FaTimes onClick={closeButton} className='md:hidden ' />
+        
+        <FaTimes  onClick={closeButton} className='md:hidden w-6 h-6  text-black   ' />
         <div className='flex justify-center items-center'>
-          <img src={logo} alt="Logo" className="w-24 h-20 flex justify-center items-center" />
+          <img src={logo} alt="Logo" className="w-24 h-20   flex justify-center items-center" />
         </div>
-
+           
         <ul className='flex flex-col justify-center  font-semibold text-lg mt-12  gap-4 '>
           {roleInfo?.role === 'admin' && (
             <>
               <li className='flex items-center gap-3'>
                 <MdDashboard className='text-xl' /><Link to='/admin/dashboard'>Dashboard</Link>
               </li>
-
+              
               <li className='flex items-center gap-3'>
-                <MdEventNote className='text-xl' /><Link to='/admin/dashboard/terms'>Terms</Link>
+                <MdEventNote className='text-2xl' /><Link to='/admin/dashboard/terms'>Terms</Link>
               </li>
-
+              
               <li className='flex items-center gap-3'>
                 <FaThList className='text-xl' /> <Link to='/admin/dashboard/category'>Category</Link>
               </li>
@@ -70,32 +70,28 @@ function SideBar({ openMobileMenu, setOpenMobileMenu , handleLogout}) {
 
 
           {roleInfo?.role==='user'&&(
-           <>
+           <>  
               <li className='flex items-center gap-3'>
                 <MdDashboard className='text-xl' /><Link to='/user/dashboard'>Dashboard</Link>
-              </li>
-
+              </li>    
+                
               <li className='flex items-center gap-3'>
-                <MdEventNote className='text-xl' /><Link  to='/user/dashboard/resource'>My Resources </Link>
+                <MdEventNote className='text-2xl' /><Link  to='/user/dashboard/resource'>My Resources </Link>
               </li>
-
+              
               <li className='flex items-center gap-3'>
                 <FaThList className='text-xl' /> <Link  to={`/user/dashboard/bookmark/${roleInfo.id}`}>Bookmarked</Link>
               </li>
 
               <li className='flex items-center gap-3'>
-                <FaFolderOpen className='text-xl' /><Link>Profile</Link>
+                <FaFolderOpen className='text-xl' /><Link to={`/user/dashboard/profile/${roleInfo.id}`}>Profile</Link>
               </li>
 
              
 
             </>
         ) }
-
-
         </ul>
-
-         
       </div>
  
 
