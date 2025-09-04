@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseURL = (import.meta.env.VITE_API_URL || 'https://skill-share-project-1.onrender.com/') + '/api';
+const baseURL = (import.meta.env.VITE_API_URL || 'https://skill-share-project-3.onrender.com') + '/api';
 
 const instance = axios.create({
     baseURL,
