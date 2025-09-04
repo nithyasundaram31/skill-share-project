@@ -40,7 +40,7 @@ if(loading){
 //search method
 
 const filteredBookmarks = bookmarked.filter(item =>
-  item.title.toLowerCase().includes(bookmarkSearch.toLowerCase())
+  item?.title.toLowerCase().includes(bookmarkSearch.toLowerCase())
 );
 
 
