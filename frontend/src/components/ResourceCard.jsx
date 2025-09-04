@@ -33,9 +33,14 @@ function ResourceCard({ pageType, onViewsUpdate, resources, onUpdate, onDelete }
         const userBookmarks = response.data;
         const initBookmarkMap = {};
 
-        userBookmarks.forEach(b => {
-          initBookmarkMap[b.resource._id] = true; // mark as bookmarked
-        });
+        // userBookmarks.forEach(b => {
+        //   initBookmarkMap[b.resource._id] = true; // mark as bookmarked
+        // });
+userBookmarks.forEach(b => {
+  if (b.resource) {             // ✅ check before using
+    initBookmarkMap[b.resource._id] = true;
+  }
+});
 
         setBookmarkedMap(initBookmarkMap);
       
