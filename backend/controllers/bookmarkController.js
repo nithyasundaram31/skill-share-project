@@ -60,19 +60,3 @@ exports.getUserBookmarks = async (req, res) => {
     res.status(500).json({ message: "Internal server error", error: error.message });
   }
 };
-
-
-// exports.getUserBookmarksById = async (req, res) => {
-//   try {
-//     const { userId } = req.params;
-
-//     const bookmarks = await Bookmark.findById({ user: userId })
-//       .populate("resource", "title") 
-//       .populate("user", "name");      
-
-//     res.json(bookmarks);
-//   } catch (error) {
-//     console.error("Get bookmarksById error:", error);
-//     res.status(500).json({ message: "Internal server error", error: error.message });
-//   }
-// };

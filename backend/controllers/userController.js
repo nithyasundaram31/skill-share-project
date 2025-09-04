@@ -7,7 +7,6 @@ exports.registerUser = async (req, res) => {
     try {
         const { name, email, password, } = req.body;
 
-        // validate input
         if (!name || !email || !password) {
             return res.status(400).json({ message: 'All fields are required' });
         }
@@ -18,11 +17,6 @@ exports.registerUser = async (req, res) => {
             return res.status(400).json({ message: 'User already exists' });
         }
 
-        //   if role is not student (protect from frontend )
-        // if (role !== 'student') {
-        //     return res.status(403).json({ message: "You are not allowed to register as admin." });
-        // }
-        //Hashing the Password
         const hashedPassword = await bcrypt.hash(req.body.password, 10);
         const user = new User({
             name,

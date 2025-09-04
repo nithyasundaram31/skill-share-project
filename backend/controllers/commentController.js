@@ -1,6 +1,4 @@
 const Comment = require('../models/Comment');
-
-// Create Comment
 // Create Comment
 exports.createComment = async (req, res) => {
   try {
