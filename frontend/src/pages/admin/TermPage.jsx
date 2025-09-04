@@ -82,7 +82,7 @@ fetchAllTerms();
      toast.error(error.response.data?.message ||"failed to delete term")
       console.log("term deleting error:",error)
     }
-    
+      
   }
 
 const handleEdit = (id) => {
