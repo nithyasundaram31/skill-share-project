@@ -1,35 +1,34 @@
-📚 Skill Share Resource Platform
+# Skill Share Resource Platform
 
 The Skill Share Resource Platform is a full-stack MERN (MongoDB, Express, React, Node.js) web application designed to help users share, discover, and bookmark educational resources like articles, videos, and PDFs.
 
 The platform provides two roles:
 
-Admin → Manage Terms, resources, categories.
+Admin → Manage terms, resources, and categories.
 
-User → Explore resources, bookmark favorites .
+User → Explore resources and bookmark favorites.
 
-*** Features***
- ***Admin Features:***
+## Features
+### Admin Features
 
-Resource Management: Add, update, delete resources.
+Resource Management → Add, update, delete resources.
 
-Category & Term Management: Organize resources into structured topics.
+Category & Term Management → Organize resources into structured topics.
 
-Analytics: View usage stats (likes, bookmarks).
+Analytics → View usage stats (likes, bookmarks).
 
- ***User Features:***
+### User Features
 
-Resource Browsing: Explore shared resources (PDFs, videos, links).
+Resource Browsing → Explore shared resources (PDFs, videos, links).
 
-Bookmarking: Save favorite resources for later.
+Bookmarking → Save favorite resources for later.
 
-Likes & Interactions: Engage with resources through likes.
+Likes & Interactions → Engage with resources through likes.
 
-Personal Dashboard: View and organize bookmarked resources.
+Personal Dashboard → View and organize bookmarked resources.
 
-**Tech Stack**
-
-**Frontend:**
+### Tech Stack
+## Frontend
 
 React.js → For building the user interface.
 
@@ -41,7 +40,7 @@ Tailwind CSS → For modern, responsive UI.
 
 Axios → For API requests.
 
-**Backend:**
+## Backend
 
 Node.js + Express.js → Server & REST API.
 
@@ -51,77 +50,93 @@ JWT Authentication → Secure routes and user roles.
 
 bcrypt.js → For password hashing.
 
-📋 Prerequisites
+## Prerequisites
 
 Install Node.js
 
 Install MongoDB locally or use MongoDB Atlas (cloud-based)
 
-**Setup**
-🔹 Backend Setup
+## Backend Setup
 
-Clone the repository:
+1. **Clone the Repository**:
+  
 
-git clone https://github.com/your-username/project-backend
+1. Clone the repository to your local machine:
+
+```bash
+git clone https://github.com/nithyasundaram31/backend
 cd backend
+```
 
+**Install Dependencies:**
 
-Install dependencies:
-
+```bash
 npm install
+```
+
+**Environment Variables**
+
+To configure the application, you need to set up environment variables. Create a .env file in the root of your backend directory with the following:
 
 
-Create a .env file in the backend root:
+```bash
+MONGO_URI=mongodb://localhost:5173/online-assessmet-platform
+JWT_SECRET=<your_jwt_secret>
+JWT_EXPIRE=1h
+```
 
-MONGO_URI=your_mongo_connection
-JWT_SECRET=your_secret
-JWT_EXPIRE=7d
+**MONGO_URI:** 
+Your MongoDB connection string.
 
+**JWT_SECRET:** 
+A secret key for JWT token generation.
 
-Start the backend:
+**JWT_EXPIRE:** 
+The duration for which the JWT is valid (e.g., 1 hour, 7d).
 
-npm start
+**Start the Backend Server**
+To start the development server, run the following command:
 
+```bash
+npm run dev
+``` 
 
-→ Runs at: http://localhost:5000/api
+## Frontend Setup
 
-*** Frontend Setup***
-
-Clone the repository:
-
+1. **Clone the Repository**:
+   ```bash
 git clone https://github.com/nithyasundaram31/frontend
 cd frontend
 
 
-Install dependencies:
-
+2. **Install Dependencies**
+```bash
 npm install
+```
 
-
-Create a .env file in the frontend root:
-
+3. **Environment Variables:** Create a .env file in the root of your frontend directory and configure:
+```bash
 VITE_API_URL=https://skill-share-project-3.onrender.com
+```
 
-
-Start the frontend:
-
+4. **Start the Application:**
+``` bash
 npm run dev
+```
 
 
-→ Runs at: http://localhost:5173
+Runs at: http://localhost:5173
 
-*** Views***
-
-*** Admin***
+### Views
+## Admin
 
 Manage resources (add, edit, delete)
 
 Organize categories & terms
 
+View analytics (likes, bookmarks)
 
-View analytics (likes, bookmarks, shares)
-
-*** User**
+## User
 
 Browse & search resources
 
@@ -129,6 +144,6 @@ Bookmark and like content
 
 Access personal dashboard
 
-🔐 Admin Credentials (for testing)
+**Admin Credentials (for testing)**
 Email: admin@gmail.com  
-Password: admin123  
+Password: admin123
