@@ -121,7 +121,7 @@ useEffect(()=>{
     }
   return (
    <>
-   <div className='w-full md:max-w-[90%] md:ml-20 bg-white p-6'>
+   <div className='w-full md:max-w-[90%] md:ml-20 bg-white md:p-6'>
     <h1 className='text-xl font-bold '> Welcome back, {user?.name?.charAt(0).toUpperCase() + user?.name?.slice(1)} !</h1> 
     <hr className='mt-6'/>
 
@@ -211,17 +211,18 @@ useEffect(()=>{
 
 {/* mobile device */}
       {/* mobile device */}
-<div className="md:hidden flex flex-col gap-2  border rounded p-2 mt-2">
+<div className="md:hidden flex flex-col gap-2   border rounded p-2 mt-2">
   {/* Action Button (Open / Watch / PDF) */}
+ <div className='flex justify-center rounded  items-center gap-2 bg-gray-300 w-full px-3 py-2'>
   <button
     onClick={() => handleResourceClick(book?.resource)}
-    className="flex justify-center  bg-gray-300 items-center gap-2 w-full text-black font-semibold px-3 py-2 rounded bg-white shadow"
+    className="flex justify-center  bg-gray-300 items-center gap-2 w-full text-black font-semibold "
   >
     {book?.resource?.type === 'video' ? (
-      <>
+      < div className='flex gap-4'>
         <PlayCircle size={20} />
         <span>Watch</span>
-      </>
+      </div>
     ) : book?.resource?.type === 'link' || book?.resource?.type === 'blog' ? (
       <>
         <Link2 size={20} />
@@ -233,11 +234,14 @@ useEffect(()=>{
         <span>Open</span>
       </>
     ) : null}
+    
   </button>
+  </div>
 
   {/* Bookmark + Remove */}
-  <div className="flex justify-center  bg-gray-300  items-center gap-2 w-full px-3 py-2 rounded bg-white shadow">
-    <button onClick={() => handleBookmark(book?.resource?._id)}>
+  <div className=" w-full  ">
+    <div className='flex justify-center rounded   items-center gap-2 bg-gray-300 w-full px-3 py-2'>
+      <button onClick={() => handleBookmark(book?.resource?._id)}>
       {bookmarkedMap[book?.resource?._id] ? (
         <FaBookmark className="text-blue-500   text-xl" />
       ) : (
@@ -245,6 +249,8 @@ useEffect(()=>{
       )}
     </button>
     <span className="font-semibold">Remove</span>
+    </div>
+    
   </div>
 </div>
 
