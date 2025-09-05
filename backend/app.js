@@ -13,7 +13,7 @@ const bookmarkRoute = require("./routers/bookmarkRoute");
 
 const app = express();
 app.use(cors({
-    origin: 'https://willowy-jalebi-48b78b.netlify.app', // Replace with your frontend URL
+    origin: 'https://dynamic-pie-c27604.netlify.app', // Replace with your frontend URL
     credentials: true, // Allow credentials to be sent
   
   //   origin: 'http://localhost:5173', // your Netlify frontend URL
