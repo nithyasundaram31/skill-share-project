@@ -3,11 +3,10 @@ import { FaBookmark, FaFileAlt, FaFilePdf, FaLink, FaPlay, FaRegBookmark, FaThum
 import resourceServices from '../services/resourceServices';
 import { useNavigate } from 'react-router';
 import bookmarkServices from '../services/bookmarkServices';
-import UserDashboardPage from '../pages/user/UserDashboardPage';
 
 function ResourceCard({ pageType, onViewsUpdate, resources, onUpdate, onDelete }) {
   const user = JSON.parse(localStorage.getItem("user"));
-  const navigate = useNavigate();    // useNavigate hook to redirect to video page
+  const navigate = useNavigate();  
   
   const [likedMap, setLikedMap] = useState({}); // Track likes for each resource individually
   const [bookmarkedMap, setBookmarkedMap] = useState({}); // Track bookmarks for each resource
@@ -33,11 +32,9 @@ function ResourceCard({ pageType, onViewsUpdate, resources, onUpdate, onDelete }
         const userBookmarks = response.data;
         const initBookmarkMap = {};
 
-        // userBookmarks.forEach(b => {
-        //   initBookmarkMap[b.resource._id] = true; // mark as bookmarked
-        // });
+       
 userBookmarks.forEach(b => {
-  if (b.resource) {             // ✅ check before using
+  if (b.resource) {            
     initBookmarkMap[b.resource._id] = true;
   }
 });
