@@ -145,5 +145,6 @@ Bookmark and like content
 Access personal dashboard
 
 **Admin Credentials (for testing)**
+
 Email: admin@gmail.com  
 Password: admin123
