@@ -80,7 +80,7 @@ To configure the application, you need to set up environment variables. Create a
 
 
 ```bash
-MONGO_URI=mongodb://localhost:5173/online-assessmet-platform
+MONGO_URI=your_mongo_connection_url
 JWT_SECRET=<your_jwt_secret>
 JWT_EXPIRE=1h
 ```
