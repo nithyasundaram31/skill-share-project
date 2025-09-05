@@ -104,10 +104,10 @@ npm run dev
 ## Frontend Setup
 
 1. **Clone the Repository**:
-   ```bash
+```bash
 git clone https://github.com/nithyasundaram31/frontend
 cd frontend
-
+```
 
 2. **Install Dependencies**
 ```bash
