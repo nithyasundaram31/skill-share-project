@@ -127,8 +127,9 @@ npm run dev
 
 Runs at: http://localhost:5173
 
-### Views
-## Admin
+## Views
+
+**Admin**
 
 Manage resources (add, edit, delete)
 
@@ -136,7 +137,7 @@ Organize categories & terms
 
 View analytics (likes, bookmarks)
 
-## User
+**User**
 
 Browse & search resources
 
