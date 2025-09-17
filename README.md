@@ -83,6 +83,9 @@ To configure the application, you need to set up environment variables. Create a
 MONGO_URI=your_mongo_connection_url
 JWT_SECRET=<your_jwt_secret>
 JWT_EXPIRE=1h
+CLOUD_NAME=your_cloud_name
+CLOUD_API_KEY=your_cloud_api_key
+CLOUD_API_SECRET=your_cloud_api_secret
 ```
 
 **MONGO_URI:** 
