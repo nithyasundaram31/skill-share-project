@@ -6,13 +6,14 @@ const resourceServices={
 return await instance.post("/resource/resources",userData)
 
    } ,
-  uploadSingleFile: async (formData) => {
+ uploadSingleFile: async (formData) => {
   return await instance.post("/file/single", formData, {
     headers: {
-      "Content-Type": "multipart/form-data" //we have to  sent the data in multipart formdata becase we cannot sent by JSON it will not acccept in text+ files 
+      "Content-Type": "multipart/form-data"
     }
   });
 },
+
 getResources:async()=>{
 return await instance.get("/resource/resources")
 },
