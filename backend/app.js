@@ -13,11 +13,11 @@ const bookmarkRoute = require("./routers/bookmarkRoute");
 
 const app = express();
 app.use(cors({
-    // origin: 'https://dynamic-pie-c27604.netlify.app', // Replace with your frontend URL
-    // credentials: true, // Allow credentials to be sent
+    origin: 'https://zingy-tartufo-dd14a3.netlify.app', // Replace with your frontend URL
+    credentials: true, // Allow credentials to be sent
   
-    origin: 'http://localhost:5173', // your Netlify frontend URL
-  credentials: true, 
+  //   origin: 'http://localhost:5173', // your Netlify frontend URL
+  // credentials: true, 
 
 }));
 
