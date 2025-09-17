@@ -12,9 +12,11 @@
   "description": "+--------------------------------------------------------------+\r | SkillShare - Admin > All Resources                           |\r +--------------------------------------------------------------+\r | [Sidebar]              | [Main Content]                      |\r |------------------------+-------------------------------------|\r | - Dashboard            | 🔍 [Search Resources...]           |\r | - Terms                | [Term ⏷] [Job Type ⏷] [Sort ⏷]     |\r | - Job Types            |                                     |\r | - Resources [Active]   | 🔽 React Basics                    |\r |                        | --------------------------------   |\r |                        | ✔️ Title: React Basics             |\r |                        | ✔️ Term: Frontend                  |\r |                        | ✔️ Job Type: Developer             |\r |                        | ▶️ Video: [Watch Video]            |\r |                        | 👍 Likes: 25                       |\r |                        | 💬 Comments (3):                   |\r |                        |   - John: Very useful               |\r |                        |   - Meena: Clear explanation        |\r |                        |   - Ravi: Thanks sir!               |\r |                        | [🗑 Delete Resource]               |\r +--------------------------------------------------------------+",
   "dependencies": {
     "bcryptjs": "^3.0.2",
+    "cloudinary": "^2.7.0",
     "cors": "^2.8.5",
     "dotenv": "^17.2.1",
     "express": "^5.1.0",
+    "express-fileupload": "^1.5.2",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.17.0",
     "multer": "^2.0.2",
