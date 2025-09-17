@@ -1,9 +1,15 @@
-const express = require('express');
-const { uploadSingleFile } = require('../controllers/fileController');
-const upload = require('../utils/upload');
+const express = require("express");
+const router = express.Router();
+const fileUpload = require("express-fileupload");
+const fileController = require("../controllers/fileController");
 
-const fileRouter = express.Router();
+// enable file upload
+router.use(fileUpload({
+  useTempFiles: true,
+  tempFileDir: "/tmp/"
+}));
 
-fileRouter.post('/single', upload.single('file'), uploadSingleFile);
+// route
+router.post("/single", fileController.uploadSingleFile);
 
-module.exports = fileRouter;
+module.exports = router;
