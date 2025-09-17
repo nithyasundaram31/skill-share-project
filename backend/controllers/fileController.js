@@ -1,32 +1,28 @@
-const File = require('../models/file');
+const cloudinary = require("../utils/cloudinary");
 
 const fileController = {
   uploadSingleFile: async (req, res) => {
     try {
-      if (!req.file) {
-        return res.status(400).json({ message: 'No file uploaded' });
+      if (!req.files || !req.files.file) {
+        return res.status(400).json({ message: "No file uploaded" });
       }
 
-     const fileUrl = `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`;
-
-      const newFile = new File({
-        name: req.file.filename,
-        path:fileUrl ,
-        type: req.file.mimetype,
-        size: req.file.size,
+      const file = req.files.file;
+      
+      // Upload PDF/Docs to Cloudinary 
+      const result = await cloudinary.uploader.upload(file.tempFilePath, {
+        resource_type: "raw",   //  use raw for PDF/Docs
+        folder: "resources",   
+        use_filename: true,
+        unique_filename: false,
       });
 
-      await newFile.save();
-
-      // Return saved file info along with success message
-      return res.status(200).json({ 
-        message: 'File uploaded successfully',
-        file: newFile,
-      });
+      res.status(200).json({ url: result.secure_url });
     } catch (error) {
-      return res.status(500).json({ message: 'Error uploading file', error });
+      console.error("Upload error:", error);
+      res.status(500).json({ message: "Upload failed" });
     }
-  }
-}
+  },
+};
 
 module.exports = fileController;
