@@ -16,7 +16,7 @@ const RedirectDashboard = () => {
     }
   }, [navigate]);
 
-  return null; // UI-யே தேவையில்லை
+  return null; // not required ui
 };
 
 

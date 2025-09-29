@@ -33,15 +33,15 @@ setShowTerm(!showTerm)
       setTerms(prev => [...prev, response.data.term]); //[...prev, newItem]
       toast.success("Term created successfully");
     }
-
+    
     setAddTerm("");
     setShowTerm(false);
-
+    
   } catch (error) {
     console.log("the edit error is:",error)
     toast.error(error.response?.data?.message || "Something went wrong");
-  }
-};
+  }  
+}; 
 
 
   const fetchAllTerms = async () => {

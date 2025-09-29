@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { FaSearch } from 'react-icons/fa';
 import { useParams } from 'react-router-dom';
 import resourceServices from '../../services/resourceServices'; // backend service import
-import commentServices from '../../services/commentServices';
+import commentServices from '../../services/commentServices'; 
 import { MdAccountCircle } from 'react-icons/md';
 import { toast } from 'react-toastify';
 
@@ -12,7 +12,7 @@ function VideoPage() {
 
   const [video, setVideo] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [views, setViews] = useState(0)
+  const [views, setViews] = useState(0);
   const [text, setText] = useState("");
   const [comments, setComments] = useState([]);
 
@@ -107,7 +107,9 @@ function VideoPage() {
   if (!video) return <p className="p-6">Video not found</p>;
 
   // YouTube embed URL
-  const embedUrl = video.url?.replace("watch?v=", "embed/");  //it open only vedio not actual coments likes 
+  const embedUrl = video.url?.replace("watch?v=", "embed/"); // When you use <iframe src="embedUrl">, https://www.youtube.com/embed/VIDEO_ID.Only the embed link works properly in an iframe.
+//The embed player automatically shows the default thumbnail of the video.
+//It also removes extra UI elements like default comments, suggested videos, and likes that appear on the normal watch page.
 
   return (
     <>

@@ -266,44 +266,50 @@ userBookmarks.forEach(b => {
                 </div>
 
                 {/* Bottom buttons */}
-                <div className="mt-auto flex gap-6 items-center justify-between mb-2">
-                  {user.role==='admin'?(
-                    <div className='space-x-28  md:space-x-16' >
-                      <button
-                        onClick={() => handleUpdateClick(resource._id)}
-                        className="bg-blue-500 text-white font-semibold rounded text-sm px-2 py-1"
-                      >
-                        Update
-                      </button>
-                      <button
-                        onClick={() => handleDeleteClick(resource._id)}
-                        className="bg-red-600 text-white font-semibold rounded text-sm px-2 py-1"
-                      >
-                        Delete
-                      </button>
-                    </div>
-                  ) :( <button onClick={() => handleBookmark(resource._id)}>
-                      {bookmarkedMap[resource._id] ? (   
-                        <FaBookmark className="text-blue-500 text-xl" />
-                      ) : (
-                        <FaRegBookmark className="text-gray-500 text-xl" />
-                      )}
-                    </button>)}
-                
-                  {resource.type && (
-                    <div className={`rounded-full px-3 py-1 text-white text-center text-xs font-semibold ${
-                      resource.type === 'video'
-                        ? 'bg-red-500'
-                        : resource.type === 'link'
-                          ? 'bg-blue-500'
-                          : resource.type === 'blog'
-                            ? 'bg-green-500'
-                            : 'bg-gray-500'
-                    }`}>
-                      {resource.type}
-                    </div>
-                  )}
-                </div>
+               {/* Bottom buttons */}
+<div className="mt-auto flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-2">
+  {user.role === 'admin' ? (
+    <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 w-full sm:w-auto">
+      <button
+        onClick={() => handleUpdateClick(resource._id)}
+        className="bg-blue-500 text-white font-semibold rounded text-sm px-3 py-1 w-full sm:w-auto"
+      >
+        Update
+      </button>
+      <button
+        onClick={() => handleDeleteClick(resource._id)}
+        className="bg-red-600 text-white font-semibold rounded text-sm px-3 py-1 w-full sm:w-auto"
+      >
+        Delete
+      </button>
+    </div>
+  ) : (
+    <button onClick={() => handleBookmark(resource._id)} className="w-fit">
+      {bookmarkedMap[resource._id] ? (   
+        <FaBookmark className="text-blue-500 text-xl" />
+      ) : (
+        <FaRegBookmark className="text-gray-500 text-xl" />
+      )}
+    </button>
+  )}
+
+  {resource.type && (
+    <div
+      className={`rounded-full px-3 py-1 text-white text-center text-xs font-semibold w-fit ${
+        resource.type === 'video'
+          ? 'bg-red-500'
+          : resource.type === 'link'
+          ? 'bg-blue-500'
+          : resource.type === 'blog'
+          ? 'bg-green-500'
+          : 'bg-gray-500'
+      }`}
+    >
+      {resource.type}
+    </div>
+  )}
+</div>
+
               </div>
             </div>
           );
