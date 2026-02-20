@@ -71,7 +71,7 @@ function AdminDashboardPage() {
   <div className='mx-auto  max-w-[500px]  md:max-w-[1100px] p-4 md:mr-6 '>
       
 
-  <div className='mb-4 w-full  grid  grid-cols-1 md:grid-cols-3 gap-6 ml-4'>
+  <div className='mb-4 w-full  grid  grid-cols-1 md:grid-cols-3 gap-6 md:ml-6'>
     <div className='bg-amber-500 text-center font-semibold  text-black text-xl p-4 rounded-lg'>
       <h1 className=' '>
        Resources </h1>

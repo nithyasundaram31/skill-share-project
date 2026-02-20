@@ -177,7 +177,7 @@ userBookmarks.forEach(b => {
 
   return (
     <>
-      <div className="w-full h-full max-w-[1100px] md:ml-16  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="w-full h-full max-w-[1000px] md:ml-16  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {currentItems.map((resource) => {
           const videoId = getYouTubeId(resource.url);
           const thumbnailUrl = videoId ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg` : null;
