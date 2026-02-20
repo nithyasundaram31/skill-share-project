@@ -71,7 +71,7 @@ function AdminDashboardPage() {
   <div className='mx-auto  max-w-[500px]  md:max-w-[1100px] p-4 md:mr-6 '>
       
 
-  <div className='mb-4 w-full  grid  grid-cols-1 md:grid-cols-3 gap-6'>
+  <div className='mb-4 w-full  grid  grid-cols-1 md:grid-cols-3 gap-6 ml-4'>
     <div className='bg-amber-500 text-center font-semibold  text-black text-xl p-4 rounded-lg'>
       <h1 className=' '>
        Resources </h1>
@@ -90,7 +90,7 @@ function AdminDashboardPage() {
       <h1 className='text-2xl'>{terms?.length}</h1>
     </div>
   </div>
-<h2 className="text-xl font-semibold mb-6">Recent Activity Chart</h2>
+<h2 className="text-xl font-semibold mb-6 ml-6">Recent Activity Chart</h2>
 
   <div className="flex justify-center mt-10 mr-2">
       <BarChart width={500} height={350} data={chartData}>
@@ -113,7 +113,7 @@ function AdminDashboardPage() {
     </div>
 
 
-  <div className="text-xl font-semibold mb-6" >Recent Activity</div>
+  <div className="text-xl font-semibold mb-6 ml-6" >Recent Activity</div>
  <table className='mx-auto w-full max-w-[900px] border p-4'>
   <thead >
     <tr className='text-center bg-gray-100'>
